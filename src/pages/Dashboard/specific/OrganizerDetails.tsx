@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Button, Popconfirm, Rate } from "antd";
 import toast from "react-hot-toast";
 import { PageContent, PageLayout } from "../../../Layout/PageLayOut";
-import { OrganizersData } from "../../../Components/ui/tables/Organizerstable";
+import { OrganizersData } from "../../../Components/ui/tables/Clubtable";
 import type { OrganizerRecord } from "../../../types/User";
 
 function OrganizerDetails() {

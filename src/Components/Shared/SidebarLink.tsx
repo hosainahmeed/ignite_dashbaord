@@ -63,8 +63,8 @@ export const SidebarLink: IsideBarLink[] = [
         },
     },
     {
-        path: '/organizers-management',
-        label: 'Organizers',
+        path: '/club-management',
+        label: 'Clubs',
         icon: {
             active: (
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" >

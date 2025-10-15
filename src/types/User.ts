@@ -11,18 +11,27 @@ export interface donationsRecord {
     transaction_id: string;
     createdAt: string;
 }
-export interface OrganizerRecord {
+
+export interface ClubAddress {
+    streetAddress: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+}
+
+export interface ClubRecord {
     key?: string | number;
-    name: string;
+    club_name: string;
+    sportOffered: string;
+    website: string;
+    joinFee: string;
+    joinDate: string;
+    status: string;
     email: string;
-    club_name: string,
-    profile_image: string;
-    location: string;
-    contactNumber: string;
-    active_event: number,
-    rating: number,
-    total_rating: number,
-    isBlock: boolean;
-    subscription_prchase_date: string;
+    clubAddress: ClubAddress[]
+    primaryContactName: string;
+    primaryContactEmail: string;
+    primaryContactPhone: string;
+    competitionLevels: string;
     createdAt: string;
 }

@@ -24,7 +24,7 @@ type SelectField = BaseField & {
     props?: SelectProps;
 };
 
-type Field = TextField | PasswordField | TextareaField | NumberField | DateField | SelectField;
+export type Field = TextField | PasswordField | TextareaField | NumberField | DateField | SelectField;
 
 export const renderField = ({
     field,

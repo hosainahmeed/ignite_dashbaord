@@ -1,7 +1,7 @@
 import PrivateRoute from "./PrivetRoute";
 import Dashboard from "../Layout/Dashboard";
-import UserPageForAll from "../pages/Dashboard/UserPageForAll";
-import OrganizersManagement from "../pages/Dashboard/OrganizersManagement";
+import NominationsManagement from "../pages/Dashboard/NominationsManagement";
+import ClubManagement from "../pages/Dashboard/ClubManagement";
 import EventsManagement from "../pages/Dashboard/EventsManagement";
 import PageNotFound from "../pages/PageNotFound";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
@@ -27,8 +27,8 @@ export const dashbaordRoutes = {
   ),
   children: [
     { path: '/', element: <DashboardHome /> },
-    { path: '/user-management', element: <UserPageForAll /> },
-    { path: '/organizers-management', element: < OrganizersManagement /> },
+    { path: '/user-management', element: <NominationsManagement /> },
+    { path: '/club-management', element: <ClubManagement /> },
     { path: '/manage-events', element: <EventsManagement /> },
     { path: '/sports-category', element: <SportsCategory /> },
     { path: '/event-category', element: <EventCategory /> },

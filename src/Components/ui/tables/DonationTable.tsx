@@ -19,17 +19,19 @@ export const donationsData: donationsRecord[] = [
         fee_covered: true,
         frequency: 'Monthly',
         fund_type: 'IGNITE Fund',
-        tier_selected:'Flame ($25)',
+        tier_selected: 'Flame ($25)',
         createdAt: '2025-09-15T01:29:19.326Z',
-        transaction_id:'TXN123456'
+        transaction_id: 'TXN123456'
     },
 ];
+
+const userTypeOptions = [
+    { label: "All Donors", value: "all" },
+    { label: "IGNITE Fund", value: "IGNITE Fund" },
+    { label: "IGNITE a Child", value: "IGNITE a Child" },
+];
 function DonationTable({ recentUser }: donationTableTableProps) {
-
-
-
     const navigate = useNavigate();
-
     const handleAction = (action: "view" | "block", record: donationsRecord) => {
         if (action === "view") {
             navigate(`/donation/${record.key}`)
@@ -47,8 +49,8 @@ function DonationTable({ recentUser }: donationTableTableProps) {
                         type: "select",
                         key: "userType",
                         label: "User Type",
-                        options: [{ label: "All Users", value: "all" }, { label: "Blocked Users", value: "blocked" }],
-                        props: { placeholder: "Select User Type" }
+                        options: userTypeOptions,
+                        props: { placeholder: "All Donor" }
                     },
                     className: "!w-[300px]"
                 })}

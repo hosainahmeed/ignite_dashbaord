@@ -9,7 +9,7 @@ function RecentlyDonations() {
                 <h1 className="text-2xl font-bold text-black">
                     Recently Donations
                 </h1>
-                <Link to={'/user-management'}>
+                <Link to={'/donations-management'}>
                     <Button className='!bg-[var(--bg-blue-high)] !text-[var(--color-white)]'>View All</Button>
                 </Link>
             </div>

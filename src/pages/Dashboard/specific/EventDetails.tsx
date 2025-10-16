@@ -4,7 +4,7 @@ import { Button, Popconfirm } from 'antd'
 import { AgeIcon, CalenderIcon, EventIcon, SaveIcon, ShareIcon, SlotIcon, SportIcon } from '../../../Components/ui/icons/SvgIcons.tsx'
 import { Card } from 'antd'
 import { MapPin, Mail, Phone, Star } from 'lucide-react'
-import { EventsData } from '../../../Components/ui/tables/EventsManagementTable.tsx'
+import DonationsManagementTable from '../../../Components/ui/tables/DonationsManagementTable.tsx'
 import cn from '../../../lib/cn.ts'
 import SingleEventBanner from '../../../Components/ui/event/SingleEventBanner.tsx'
 import { PageContent, PageLayout } from '../../../Layout/PageLayOut.tsx'
@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 
 function EventDetails() {
     const { id } = useParams()
-    const event = EventsData.find((item) => item.id === Number(id))
+    const event = DonationsManagementTable({ recentUser: true }).dataSource.find((item) => item.key === Number(id))
 
     if (!event) {
         return (

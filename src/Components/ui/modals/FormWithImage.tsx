@@ -25,7 +25,7 @@ interface CategoryFormProps {
 }
 
 
-function CategoryForm({
+function FormWithImage({
     open,
     hide,
     title,
@@ -36,7 +36,7 @@ function CategoryForm({
     btnText
 }: CategoryFormProps) {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-console.log(fileList)
+    console.log(fileList)
     useEffect(() => {
         if (record) {
             form.setFieldsValue({ name: record.name });
@@ -114,4 +114,4 @@ console.log(fileList)
     );
 }
 
-export default CategoryForm;
+export default FormWithImage;

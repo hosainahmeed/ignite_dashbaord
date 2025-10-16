@@ -1,9 +1,9 @@
 import { Form, Table } from "antd";
 import type { IsportCategory } from "../../../types/category";
 import categoryTableColumns from "../columns/CategoryTableColumns";
-import CategoryForm from "../modals/CategoryForm";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import CategoryFormWithOutImage from "../modals/CategoryFormWithOutImage";
 
 interface UserTableProps {
     recentUser?: boolean;
@@ -20,8 +20,6 @@ function SportsCategoryTable({ recentUser }: UserTableProps) {
         {
             id: 1,
             name: "Soccer",
-            photo_url: "https://static.vecteezy.com/system/resources/previews/021/629/700/non_2x/soccer-ball-football-cartoon-icon-illustration-sports-icon-concept-illustration-suitable-for-icon-logo-sticker-clipart-free-vector.jpg",
-            total_events: 4
         },
     ];
 
@@ -55,7 +53,7 @@ function SportsCategoryTable({ recentUser }: UserTableProps) {
                 pagination={false}
                 rowKey="email"
             />
-            <CategoryForm
+            <CategoryFormWithOutImage
                 form={form}
                 open={modalVisible}
                 hide={setModalVisible}

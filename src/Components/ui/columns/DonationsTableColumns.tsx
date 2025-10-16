@@ -24,7 +24,23 @@ export default function donationsTableColumns(
             render: (email) => <span>{email}</span>,
         },
         {
-            title: "Joined",
+            title: "Amount",
+            dataIndex: "amount",
+            key: "amount",
+        },
+        {
+            title: "Frequency",
+            dataIndex: "frequency",
+            key: "frequency",
+        },
+        {
+            title: "Fee Covered",
+            dataIndex: "fee_covered",
+            key: "fee_covered",
+            render: (fee_covered) => <span>{fee_covered ? 'Yes (3%)' : 'No (0%)'}</span>,
+        },
+        {
+            title: "Date",
             dataIndex: "createdAt",
             key: "createdAt",
             render: (createdAt: string) => {

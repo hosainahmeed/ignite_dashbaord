@@ -3,25 +3,25 @@ import { useParams } from "react-router-dom";
 import { Button, Popconfirm, Rate } from "antd";
 import toast from "react-hot-toast";
 import { PageContent, PageLayout } from "../../../Layout/PageLayOut";
-import { OrganizersData } from "../../../Components/ui/tables/Clubtable";
-import type { OrganizerRecord } from "../../../types/User";
+import { clubData } from "../../../Components/ui/tables/Clubtable";
+import type { ClubRecord } from "../../../types/User";
 
-function OrganizerDetails() {
+function ClubDetails() {
   const { id } = useParams();
-  const [user, setUser] = useState<OrganizerRecord | null | undefined>(null);
+  const [user, setUser] = useState<ClubRecord | null | undefined>(null);
   console.log(id);
   useEffect(() => {
-    const user = OrganizersData.find((user) => user.key === Number(id))
+    const user = clubData.find((user) => user.key === Number(id))
     setUser(user)
   }, [id])
 
   const handleBlockUser = (id: any) => {
     console.log(id)
-    toast.success("Organizer Blocked")
+    toast.success("Club Blocked")
   }
   const handleUnBlockUser = (id: any) => {
     console.log(id)
-    toast.success("Organizer UnBlocked")
+    toast.success("Club UnBlocked")
   }
   return (
     <PageLayout title="Organizer Details">
@@ -33,12 +33,12 @@ function OrganizerDetails() {
                 <img src={user?.profile_image} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="grid grid-cols-2 mt-4 gap-4">
-                <OrganizerDetailsCard title="Business Name" description={user?.club_name} />
-                <OrganizerRating rating={user?.rating} totalRating={user?.total_rating} />
-                <OrganizerDetailsCard title="Name" description={user?.name} />
-                <OrganizerDetailsCard title="Email" description={user?.email} />
-                <OrganizerDetailsCard title="Contact Number" description={user?.contactNumber} />
-                <OrganizerDetailsCard title="Location" description={user?.location} />
+                <ClubDetailsCard title="Business Name" description={user?.club_name} />
+                <ClubRating rating={user?.rating} totalRating={user?.total_rating} />
+                <ClubDetailsCard title="Name" description={user?.name} />
+                <ClubDetailsCard title="Email" description={user?.email} />
+                <ClubDetailsCard title="Contact Number" description={user?.contactNumber} />
+                <ClubDetailsCard title="Location" description={user?.location} />
               </div>
               <div className="mt-4">
                 <Popconfirm
@@ -67,9 +67,9 @@ function OrganizerDetails() {
   )
 }
 
-export default OrganizerDetails
+export default ClubDetails
 
-const OrganizerRating = ({ rating, totalRating }: { rating: number, totalRating: number }) => {
+const ClubRating = ({ rating, totalRating }: { rating: number, totalRating: number }) => {
   return (
     <div
       className="p-4 border flex flex-col items-center border-gray-300 rounded bg-[#fff]">
@@ -81,7 +81,7 @@ const OrganizerRating = ({ rating, totalRating }: { rating: number, totalRating:
 }
 
 
-const OrganizerDetailsCard = ({ title, description }: { title: string, description: string }) => {
+const ClubDetailsCard = ({ title, description }: { title: string, description: string }) => {
   return (
     <div
       className="p-4 border border-gray-300 rounded bg-[#fff]">

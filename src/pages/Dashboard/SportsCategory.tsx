@@ -1,10 +1,11 @@
 import { FaPlus } from "react-icons/fa"
 import SportsCategoryTable from "../../Components/ui/tables/SportsCategoryTable"
 import { PageContent, PageLayout } from "../../Layout/PageLayOut"
-import CategoryForm from "../../Components/ui/modals/CategoryForm"
+import CategoryForm from "../../Components/ui/modals/FormWithImage"
 import { Form } from "antd"
 import { useCallback, useState } from "react"
 import type { IsportCategory } from "../../types/category"
+import CategoryFormWithOutImage from "../../Components/ui/modals/CategoryFormWithOutImage"
 
 function SportsCategory() {
   const [form] = Form.useForm();
@@ -39,7 +40,7 @@ function SportsCategory() {
     >
       <PageContent>
         <SportsCategoryTable />
-        <CategoryForm
+        <CategoryFormWithOutImage
           form={form}
           open={modalVisible}
           hide={setModalVisible}

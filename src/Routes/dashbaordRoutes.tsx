@@ -2,7 +2,7 @@ import PrivateRoute from "./PrivetRoute";
 import Dashboard from "../Layout/Dashboard";
 import NominationsManagement from "../pages/Dashboard/NominationsManagement";
 import ClubManagement from "../pages/Dashboard/ClubManagement";
-import EventsManagement from "../pages/Dashboard/EventsManagement";
+import DonationsManagement from "../pages/Dashboard/DonationsManagement";
 import PageNotFound from "../pages/PageNotFound";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import SportsCategory from "../pages/Dashboard/SportsCategory";
@@ -13,8 +13,8 @@ import TransactionManage from "../pages/Dashboard/TransactionManage";
 import TermsAndConditions from "../pages/Dashboard/TermsAndConditions";
 import FAQ from "../pages/Dashboard/FAQ";
 import PrivacyPolicy from "../pages/Dashboard/PrivacyPolicy";
-import OrganizerDetails from "../pages/Dashboard/specific/OrganizerDetails";
-import EventDetails from "../pages/Dashboard/specific/EventDetails";
+import ClubDetails from "../pages/Dashboard/specific/ClubDetails";
+// import EventDetails from "../pages/Dashboard/specific/EventDetails";
 import DonationDetails from "../pages/Dashboard/specific/DonationDetails";
 
 export const dashbaordRoutes = {
@@ -29,7 +29,7 @@ export const dashbaordRoutes = {
     { path: '/', element: <DashboardHome /> },
     { path: '/user-management', element: <NominationsManagement /> },
     { path: '/club-management', element: <ClubManagement /> },
-    { path: '/manage-events', element: <EventsManagement /> },
+    { path: '/donations-management', element: <DonationsManagement /> },
     { path: '/sports-category', element: <SportsCategory /> },
     { path: '/event-category', element: <EventCategory /> },
     { path: '/manage-pricing', element: <SubscriptionManage /> },
@@ -39,7 +39,7 @@ export const dashbaordRoutes = {
     { path: '/privacy-policy', element: <PrivacyPolicy /> },
     { path: '/terms-and-conditions', element: <TermsAndConditions /> },
     { path: '/donation/:id', element: <DonationDetails /> },
-    { path: '/organizer/:id', element: <OrganizerDetails /> },
-    { path: '/event/:id', element: <EventDetails /> },
+    { path: '/club/:id', element: <ClubDetails /> },
+    // { path: '/event/:id', element: <EventDetails /> },
   ],
 };

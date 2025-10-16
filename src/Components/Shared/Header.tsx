@@ -28,7 +28,7 @@ function Header() {
 
   return (
     <header className="flex h-20 px-4 items-center bg-[var(--primary-color)] shadow-sm">
-      <img className="h-5" src={IMAGE.brandLogo} alt="Dudu" />
+      <img className="h-16" src={IMAGE.brandLogo} alt="Dudu" />
       <div className="ml-auto flex items-center px-4 space-x-4">
         <Notifications />
         <div className="relative" ref={profileRef}>

@@ -1,6 +1,5 @@
 import { Space, Button, Tooltip, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import UserInformation from "../reuseable/UserInformation";
 import { EditIcon } from "../icons/SvgIcons";
 import type { IsportCategory } from "../../../types/category";
 import { FaTrash } from "react-icons/fa";
@@ -10,27 +9,9 @@ export default function categoryTableColumns(
 ): ColumnsType<IsportCategory> {
     return [
         {
-            title: "Icon",
-            dataIndex: "title",
-            key: "title",
-            render: (_, record) => (
-                <Space size="middle">
-                    <UserInformation
-                        shape="circle"
-                        profile_image={record.photo_url}
-                    />
-                </Space>
-            ),
-        },
-        {
             title: "Sports Category Name",
             dataIndex: "name",
             key: "name",
-        },
-        {
-            title: "Total Events",
-            dataIndex: "total_events",
-            key: "total_events",
         },
         {
             title: "Action",

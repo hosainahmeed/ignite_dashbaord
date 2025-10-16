@@ -20,7 +20,6 @@ function EventCategoryTable({ recentUser }: UserTableProps) {
         {
             id: 1,
             name: "League",
-            total_events: 46
         },
     ];
 

@@ -15,6 +15,7 @@ export const clubData: ClubRecord[] = [
         status: "Active",
         email: "info@youthsportsclub.com",
         club_website: "info@youthsportsclub.com",
+        quantity: "1",
         clubAddress: [
             {
                 streetAddress: "Suite 5B, San Diego, California, USA",

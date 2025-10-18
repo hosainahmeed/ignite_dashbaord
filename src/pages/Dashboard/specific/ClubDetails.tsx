@@ -41,6 +41,7 @@ function ClubDetails() {
               ))
             }
           </div>
+          <ClubDetailsCard title="Quantity" description={data?.quantity} />
           <ClubDetailsCard title={`Competition Levels`} description={data?.competitionLevels ?? 'N/A'} />
         </div>
       </PageContent>

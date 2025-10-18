@@ -1,30 +1,29 @@
 import { Form, Table } from "antd";
-import type { IeventCategory } from "../../../types/category";
-import eventCategoryTableColumns from "../columns/EventCategoryTableColumns";
-import CategoryFormWithOutImage from "../modals/CategoryFormWithOutImage";
+import type { IigniteTeam } from "../../../types/category";
+import IgniteTeamTableColumns from "../columns/EventCategoryTableColumns";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import FormWithImage from "../modals/FormWithImage";
+import { IMAGE } from "../../../assets/index.image";
 
-interface UserTableProps {
-    recentUser?: boolean;
-}
 
-function EventCategoryTable({ recentUser }: UserTableProps) {
-    console.log(recentUser)
+function IgniteTeamTable() {
     const [form] = Form.useForm();
     const [isUpdate, setIsUpdate] = useState<boolean>(false);
-    const [record, setRecord] = useState<IeventCategory | null>(null);
+    const [record, setRecord] = useState<IigniteTeam | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-    const categoryData: IeventCategory[] = [
+    const categoryData: IigniteTeam[] = [
         {
             id: 1,
-            name: "League",
+            name: "Neil Marshall",
+            photo_url: IMAGE.brandLogo,
+            position: "BOARD CHAIR",
         },
     ];
 
 
-    const handleEditCategory = useCallback((record: IeventCategory) => {
+    const handleEditCategory = useCallback((record: IigniteTeam) => {
         setIsUpdate(true);
         setRecord(record);
         setModalVisible(true);
@@ -46,23 +45,23 @@ function EventCategoryTable({ recentUser }: UserTableProps) {
         <>
             <Table
                 bordered
-                columns={eventCategoryTableColumns({ handleEditCategory, handleDeleteCategory })}
+                columns={IgniteTeamTableColumns({ handleEditCategory, handleDeleteCategory })}
                 dataSource={categoryData}
                 pagination={false}
                 rowKey="email"
             />
 
-            <CategoryFormWithOutImage
+            <FormWithImage
                 form={form}
                 open={modalVisible}
                 hide={setModalVisible}
                 onFinish={handleSubmit}
-                title={isUpdate ? "Update Category" : "Add Category"}
+                title={isUpdate ? "Update Ignite Team" : "Add Ignite Team"}
                 record={record}
-                btnText={isUpdate ? "Update" : "Add Category"}
+                btnText={isUpdate ? "Update" : "Add Ignite Team"}
             />
         </>
     );
 }
 
-export default EventCategoryTable;
+export default IgniteTeamTable;

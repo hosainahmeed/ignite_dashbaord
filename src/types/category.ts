@@ -2,7 +2,9 @@ export interface IsportCategory {
     id: number;
     name: string;
 }
-export interface IeventCategory {
+export interface IigniteTeam {
     id: number;
     name: string;
+    photo_url: string;
+    position: string;
 }

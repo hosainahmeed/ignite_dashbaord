@@ -1,15 +1,15 @@
 import { Form } from "antd";
 import { FaPlus } from "react-icons/fa"
-import EventCategoryTable from "../../Components/ui/tables/EventCategoryTable"
+import IgniteTeamTable from "../../Components/ui/tables/IgniteTeamTable"
 import { PageContent, PageLayout } from "../../Layout/PageLayOut"
 import { useCallback, useState } from "react";
-import type { IeventCategory } from "../../types/category";
-import CategoryFormWithOutImage from "../../Components/ui/modals/CategoryFormWithOutImage";
+import type { IigniteTeam } from "../../types/category";
+import FormWithImage from "../../Components/ui/modals/FormWithImage";
 
-function EventCategory() {
+function IgniteTeam() {
   const [form] = Form.useForm();
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const [record, setRecord] = useState<IeventCategory | null>(null);
+  const [record, setRecord] = useState<IigniteTeam | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const handleAddCategory = useCallback(() => {
     setIsUpdate(false);
@@ -25,9 +25,9 @@ function EventCategory() {
   );
   return (
     <PageLayout
-      title="Event Category Management"
+      title="IGNITE Team Management"
       isButton={{
-        buttonText: 'Add New Event Category',
+        buttonText: 'Add New Member',
         icon: <FaPlus />,
         type: 'action',
         onClick() {
@@ -36,13 +36,13 @@ function EventCategory() {
       }}
     >
       <PageContent>
-        <EventCategoryTable />
-        <CategoryFormWithOutImage
+        <IgniteTeamTable />
+        <FormWithImage
           form={form}
           open={modalVisible}
           hide={setModalVisible}
           onFinish={handleSubmit}
-          title={isUpdate ? "Update Category" : "Add New Event Category"}
+          title={isUpdate ? "Update Ignite Team" : "Add New Ignite Team"}
           btnText={isUpdate ? "Update" : "Add New"}
           record={record}
           loading={isUpdate}
@@ -52,4 +52,4 @@ function EventCategory() {
   )
 }
 
-export default EventCategory
+export default IgniteTeam

@@ -6,7 +6,7 @@ import nominationsTableColumns from "../columns/NominationsTableColumns";
 
 export const registrationData: ChildRegistrationData[] = [
   {
-
+    _id: "1",
     childFirstName: "Wade",
     childLastName: "Warren",
     childDateOfBirth: "26-03-25",
@@ -69,7 +69,7 @@ function NominationsTable() {
   const navigate = useNavigate();
   const handleAction = (action: "view" | "block", record: ChildRegistrationData) => {
     if (action === "view") {
-      navigate(`/child-registration/${record.childFirstName}`)
+      navigate(`/nominations-details/${record._id}`)
     }
     if (action === "block") {
       console.log(record)

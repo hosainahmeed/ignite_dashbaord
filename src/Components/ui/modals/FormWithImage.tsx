@@ -4,7 +4,7 @@ import type { UploadFile } from "antd/es/upload/interface";
 import { UploadOutlined } from "@ant-design/icons";
 import { imageUrl } from "../../../utils/imageHandler";
 import { primaryBtn } from "../../../constant/btnStyle";
-import type { IsportCategory } from "../../../types/category";
+import type { IigniteTeam } from "../../../types/category";
 
 
 interface CategoryFormValues {
@@ -18,7 +18,7 @@ interface CategoryFormProps {
     hide: (value: boolean) => void;
     title: string;
     onFinish: (values: CategoryFormValues) => void;
-    record?: IsportCategory | null;
+    record?: IigniteTeam | null;
     loading?: boolean;
     form: any;
     btnText: string;

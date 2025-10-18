@@ -10,7 +10,7 @@ function RecentlyDonations() {
                     Recently Donations
                 </h1>
                 <Link to={'/donations-management'}>
-                    <Button className='!bg-[var(--bg-blue-high)] !text-[var(--color-white)]'>View All</Button>
+                    <Button className='!bg-[var(--bg-red-high)] !text-[var(--color-white)]'>View All</Button>
                 </Link>
             </div>
             <DonationTable recentUser={true} />

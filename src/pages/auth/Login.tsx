@@ -77,7 +77,7 @@ const Login = () => {
                 </Form.Item>
               </Form.Item>
 
-              <Link to="/forgot-password" className="!text-[var(--bg-blue-high)] !underline">
+              <Link to="/forgot-password" className="!text-[var(--bg-red-high)] !underline">
                 Forgot password
               </Link>
             </div>

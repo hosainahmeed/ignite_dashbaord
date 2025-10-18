@@ -1,7 +1,6 @@
 import { Space, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
-import { Link } from "react-router-dom";
 import { ViewDetailIcon } from "../icons/SvgIcons";
 
 export default function nominationsTableColumns(
@@ -56,16 +55,14 @@ export default function nominationsTableColumns(
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Link to={`/child-registration/${record.childFirstName}`}>
-                        <Button
-                            style={{
-                                backgroundColor: '#D62828',
-                                color: 'white'
-                            }}
-                            icon={<ViewDetailIcon />}
-                            onClick={() => onAction?.("view", record)}
-                        />
-                    </Link>
+                    <Button
+                        style={{
+                            backgroundColor: '#D62828',
+                            color: 'white'
+                        }}
+                        icon={<ViewDetailIcon />}
+                        onClick={() => onAction?.("view", record)}
+                    />
                 </Space>
             ),
         },

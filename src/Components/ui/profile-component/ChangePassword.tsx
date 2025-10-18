@@ -84,7 +84,7 @@ const ChangePassword = () => {
         htmlType="submit"
         // disabled={isNewPassChange}
         style={{
-          backgroundColor: "var(--bg-blue-high)",
+          backgroundColor: "var(--bg-red-high)",
           color: "#fff",
           height: 40,
         }}

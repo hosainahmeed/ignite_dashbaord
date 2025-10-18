@@ -1,21 +1,33 @@
 import { Space, Button, Tooltip, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { EditIcon } from "../icons/SvgIcons";
-import type { IeventCategory } from "../../../types/category";
 import { FaTrash } from "react-icons/fa";
+import type { IigniteTeam } from "../../../types/category";
 
-export default function eventCategoryTableColumns({ handleEditCategory, handleDeleteCategory }:
-    { handleEditCategory: (record: IeventCategory) => void, handleDeleteCategory: (id: number) => void }): ColumnsType<IeventCategory> {
+export default function IgniteTeamTableColumns({ handleEditCategory, handleDeleteCategory }:
+    { handleEditCategory: (record: IigniteTeam) => void, handleDeleteCategory: (id: number) => void }): ColumnsType<IigniteTeam> {
     return [
         {
-            title: "Event Category Name",
-            dataIndex: "name",
-            key: "title",
+            title: "Photo",
+            dataIndex: "photo_url",
+            key: "photo_url",
+            render: (_, record) => (
+                <img
+                    src={record.photo_url}
+                    alt={record.name}
+                    style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                />
+            ),
         },
         {
-            title: "Total Events",
-            dataIndex: "total_events",
-            key: "total_events",
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Position",
+            dataIndex: "position",
+            key: "position",
         },
         {
             title: "Action",
@@ -33,21 +45,21 @@ export default function eventCategoryTableColumns({ handleEditCategory, handleDe
                         />
                     </Tooltip>
                     <Popconfirm
-                        title="Are you sure you want to delete this category?"
+                        title="Are you sure you want to delete this Ignite member?"
                         onConfirm={() => handleDeleteCategory(record?.id)}
                         placement="bottomRight"
                         okText="Yes"
                         cancelText="No"
                         okButtonProps={{
                             style: {
-                                backgroundColor: "var(--bg-blue-high)",
+                                backgroundColor: "var(--bg-red-high)",
                                 color: "white",
                             }
                         }}
                         cancelButtonProps={{
                             style: {
                                 backgroundColor: "var(--color-white)",
-                                color: "var(--bg-blue-high)",
+                                color: "var(--bg-red-high)",
                             }
                         }}
                     >

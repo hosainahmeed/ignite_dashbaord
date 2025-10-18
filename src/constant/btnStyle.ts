@@ -7,7 +7,7 @@ export const primaryBtn = {
     paddingRight: 24,
     paddingBottom: 17,
     paddingLeft: 24,
-    backgroundColor: "var(--bg-blue-high)",
+    backgroundColor: "var(--bg-red-high)",
     color: "var(--color-white)",
 }
 export const secondaryBtn = {
@@ -20,5 +20,5 @@ export const secondaryBtn = {
     paddingBottom: 17,
     paddingLeft: 24,
     backgroundColor: "var(--color-white)",
-    color: "var(--bg-blue-high)",
+    color: "var(--bg-red-high)",
 }

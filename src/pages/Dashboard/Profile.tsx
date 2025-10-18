@@ -52,7 +52,7 @@ const Profile = () => {
             {tab === 'Edit Profile' && (
               <button
                 aria-label="Edit Profile Picture"
-                className="absolute bg-[var(--bg-blue-high)] p-1 rounded-full right-0 bottom-2"
+                className="absolute bg-[var(--bg-red-high)] p-1 rounded-full right-0 bottom-2"
               >
                 <CameraIcon />
               </button>
@@ -79,7 +79,7 @@ const Profile = () => {
             key={item}
             style={{ width: '200px', justifyContent: 'center' }}
             className={`${item === tab
-              ? '!bg-[var(--bg-blue-high)] !text-white !border-0 !rounded-sm'
+              ? '!bg-[var(--bg-red-high)] !text-white !border-0 !rounded-sm'
               : '!border-0 !rounded-none !text-black !border-black !bg-transparent'
               }`}
             onClick={() => setTab(item)}

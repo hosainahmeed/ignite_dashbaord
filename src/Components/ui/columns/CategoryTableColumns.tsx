@@ -35,14 +35,14 @@ export default function categoryTableColumns(
                         cancelText="No"
                         okButtonProps={{
                             style: {
-                                backgroundColor: "var(--bg-blue-high)",
+                                backgroundColor: "var(--bg-red-high)",
                                 color: "white",
                             }
                         }}
                         cancelButtonProps={{
                             style: {
                                 backgroundColor: "var(--color-white)",
-                                color: "var(--bg-blue-high)",
+                                color: "var(--bg-red-high)",
                             }
                         }}
                         onConfirm={() => {

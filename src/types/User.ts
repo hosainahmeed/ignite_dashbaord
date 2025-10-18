@@ -28,6 +28,7 @@ export interface ClubRecord {
     joinDate: string;
     status: string;
     email: string;
+    club_website: string,
     clubAddress: ClubAddress[]
     primaryContactName: string;
     primaryContactEmail: string;

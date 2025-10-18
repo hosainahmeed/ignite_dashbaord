@@ -14,7 +14,14 @@ export const clubData: ClubRecord[] = [
         joinDate: "+1 (555) 123-4567",
         status: "Active",
         email: "info@youthsportsclub.com",
+        club_website: "info@youthsportsclub.com",
         clubAddress: [
+            {
+                streetAddress: "Suite 5B, San Diego, California, USA",
+                city: "San Diego",
+                state: "California",
+                zipCode: "92101"
+            },
             {
                 streetAddress: "Suite 5B, San Diego, California, USA",
                 city: "San Diego",

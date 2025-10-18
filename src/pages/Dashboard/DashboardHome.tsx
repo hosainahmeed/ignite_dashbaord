@@ -25,7 +25,7 @@ function DashboardHome() {
 
     return (
         <div>
-            <div className="flex border border-gray-300 shadow-xl items-center  justify-between bg-gradient-to-tr from-[#F6F6F6] via-white to-[var(--bg-blue-high)]/70 p-12 rounded-xl">
+            <div className="flex border border-gray-300 shadow-xl items-center  justify-between bg-gradient-to-tr from-[#F6F6F6] via-white to-[var(--bg-red-high)]/70 p-12 rounded-xl">
                 {cardData.map((card, index) => (
                     <div key={index}>
                         <div
@@ -39,7 +39,7 @@ function DashboardHome() {
                                 <h1 className="text-3xl !font-semibold leadingflex items-center justify-center -4">
                                     {card.title}
                                 </h1>
-                                <h1 className="text-3xl mt-3 !font-semibold leading-4 text-[var(--bg-blue-high)]">
+                                <h1 className="text-3xl mt-3 !font-semibold leading-4 text-[var(--bg-red-high)]">
                                     {card.value}
                                 </h1>
                             </div>

@@ -1,5 +1,5 @@
 export interface ChildRegistrationData {
-
+    _id: string;
     childFirstName: string;
     childLastName: string;
     childDateOfBirth: string;

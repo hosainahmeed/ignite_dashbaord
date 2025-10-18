@@ -1,7 +1,6 @@
 import { FaPlus } from "react-icons/fa"
 import SportsCategoryTable from "../../Components/ui/tables/SportsCategoryTable"
 import { PageContent, PageLayout } from "../../Layout/PageLayOut"
-import CategoryForm from "../../Components/ui/modals/FormWithImage"
 import { Form } from "antd"
 import { useCallback, useState } from "react"
 import type { IsportCategory } from "../../types/category"

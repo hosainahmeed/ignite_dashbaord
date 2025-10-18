@@ -33,7 +33,7 @@ const ProfileEdit = ({ image, data }: {
   console.log(data);
   return (
     <div>
-      <p className="text-[var(--bg-blue-high)] text-3xl text-center">
+      <p className="text-[var(--bg-red-high)] text-3xl text-center">
         Edit Your Profile
       </p>
       <Form
@@ -73,11 +73,11 @@ const ProfileEdit = ({ image, data }: {
         <Button
           htmlType="submit"
           style={{
-            backgroundColor: 'var(--bg-blue-high)',
+            backgroundColor: 'var(--bg-red-high)',
             color: '#fff',
             height: 40,
           }}
-          className="!bg-[var(--bg-blue-high] !hover:bg-[var(--bg-blue-low] w-full"
+          className="!bg-[var(--bg-red-high] !hover:bg-[var(--bg-blue-low] w-full"
         >
           Update Profile
         </Button>

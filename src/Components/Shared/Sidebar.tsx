@@ -30,7 +30,7 @@ const Sidebar = () => {
                         paddingRight: '14px',
                     }}
                     className={`button-white w-full ${(item?.path === '/' ? location.pathname === '/' : location.pathname.includes(item?.path))
-                        ? '!bg-[var(--bg-blue-high)] !text-[var(--text-light)]'
+                        ? '!bg-[var(--bg-red-high)] !text-[var(--text-light)]'
                         : '!bg-[var(--text-light)] !text-[var(--text-dark)]'
                         } whitespace-nowrap links`}
                     key={item?.path}

@@ -57,7 +57,7 @@ const OneTimePassword = () => {
           Didn't receive a code?{' '}
           <button
             type="button"
-            className="font-medium text-[var(--bg-blue-high)] hover:!underline"
+            className="font-medium text-[var(--bg-red-high)] hover:!underline"
             onClick={() => console.log('Resend OTP')}
           >
             Resend code

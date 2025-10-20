@@ -3,9 +3,11 @@ import { FiChevronDown, FiLogOut, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Notifications from "../ui/Notifications/Notifications";
 import { IMAGE } from "../../assets/index.image";
+import Cookies from "js-cookie";
 
 export const handleLogout = () => {
   localStorage.removeItem("accessToken");
+  Cookies.remove("accessToken");
   if (window !== undefined) {
     window.location.reload();
     window.location.href = "/login";

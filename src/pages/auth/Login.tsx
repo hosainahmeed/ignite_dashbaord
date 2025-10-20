@@ -4,18 +4,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { IMAGE } from '../../assets/index.image';
 import { primaryBtn } from '../../constant/btnStyle';
-
+import { useLoginMutation } from '../../redux/services/authApis';
+import Cookies from 'js-cookie';
 const { Title } = Typography;
 
 const Login = () => {
 
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation()
 
   useEffect(() => {
     form.setFieldsValue({
-      email: '',
-      password: '',
+      email: 'skyfal430@gmail.com',
+      password: 'secureAdminPassword123',
     });
   }, [form]);
 
@@ -26,9 +28,19 @@ const Login = () => {
     }
 
     try {
-      navigate('/');
-    } catch (error) {
-      console.log(error)
+      const data = {
+        email: email,
+        password: password
+      }
+      const res = await login(data).unwrap();
+      if (!res?.success) throw new Error(res?.message)
+      if (res?.success) {
+        toast.success(res?.message)
+        navigate('/')
+        Cookies.set('accessToken', res?.data?.accessToken)
+      }
+    } catch (error: any) {
+      toast.error(error?.message)
     }
   };
 
@@ -64,7 +76,7 @@ const Login = () => {
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
-            <Input size="large" type="password" placeholder="Password" />
+            <Input.Password size="large" placeholder="Password" />
           </Form.Item>
 
           <Form.Item>
@@ -85,8 +97,8 @@ const Login = () => {
 
           <Form.Item>
             <Button
-              // loading={isLoading}
-              // disabled={isLoading}
+              loading={isLoginLoading}
+              disabled={isLoginLoading}
               size='large' style={primaryBtn}
               htmlType="submit"
               block

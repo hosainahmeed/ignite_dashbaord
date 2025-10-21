@@ -1,5 +1,5 @@
 export interface IsportCategory {
-    id: number;
+    _id: string;
     name: string;
 }
 export interface IigniteTeam {

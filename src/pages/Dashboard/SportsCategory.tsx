@@ -3,27 +3,44 @@ import SportsCategoryTable from "../../Components/ui/tables/SportsCategoryTable"
 import { PageContent, PageLayout } from "../../Layout/PageLayOut"
 import { Form } from "antd"
 import { useCallback, useState } from "react"
-import type { IsportCategory } from "../../types/category"
 import CategoryFormWithOutImage from "../../Components/ui/modals/CategoryFormWithOutImage"
+import { useCreateCategoryMutation } from "../../redux/services/categoryApi"
+import toast from "react-hot-toast"
 
 function SportsCategory() {
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [record, setRecord] = useState<IsportCategory | null>(null);
+  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation()
 
   const handleAddCategory = useCallback(() => {
-    setIsUpdate(false);
-    setRecord(null);
     setModalVisible(true);
   }, []);
 
-  const handleSubmit = useCallback(
+  const handleSubmitForCreate = useCallback(
     async (values: any) => {
-      console.log(values)
+      try {
+        if (!values.name) return toast.error("Category name is required");
+        const res = await createCategory(values).unwrap()
+        if (!res?.success) {
+          throw new Error(res?.message || "Category created failed")
+        }
+        if (res?.success) {
+          res?.message && toast.success(res?.message || "Category created successfully")
+          handleCancel()
+          form.resetFields()
+        }
+      } catch (error: any) {
+        toast.error(error?.data?.message || error?.message || "Category created failed")
+        handleCancel()
+        form.resetFields()
+      }
     },
-    []
+    [createCategory]
   );
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
 
   return (
     <PageLayout
@@ -43,11 +60,10 @@ function SportsCategory() {
           form={form}
           open={modalVisible}
           hide={setModalVisible}
-          onFinish={handleSubmit}
-          title={isUpdate ? "Update Category" : "Add New Sports Category"}
-          btnText={isUpdate ? "Update" : "Add New"}
-          record={record}
-          loading={isUpdate}
+          onFinish={handleSubmitForCreate}
+          title="Add New Sports Category"
+          btnText="Add New"
+          loading={isCreating}
         />
       </PageContent>
     </PageLayout>

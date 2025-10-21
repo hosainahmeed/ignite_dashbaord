@@ -54,7 +54,7 @@ function CategoryFormWithOutImage({
             onCancel={() => hide(false)}
             footer={null}
             centered
-            destroyOnClose
+            destroyOnHidden
         >
             <Form<CategoryFormValues>
                 layout="vertical"

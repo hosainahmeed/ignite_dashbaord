@@ -8,7 +8,7 @@ const baseApis = createApi({
         prepareHeaders: (headers) => {
             const token = Cookies.get('accessToken');
             if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
+                headers.set('Authorization', `${token}`);
             }
             return headers;
         },
@@ -20,7 +20,7 @@ const baseApis = createApi({
         'post',
         'profile',
         'subscription',
-        'uniqueTypes'
+        'category'
     ],
     endpoints: () => ({}),
 });

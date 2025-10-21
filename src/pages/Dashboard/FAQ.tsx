@@ -155,7 +155,7 @@ const FAQ: React.FC = () => {
           width={600}
           onCancel={handleCloseModal}
           footer={null}
-          destroyOnClose
+          destroyOnHidden
         >
           <Form
             form={form}

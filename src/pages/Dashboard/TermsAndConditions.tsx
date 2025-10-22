@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { Button } from "antd";
-// import { useGetTermsQuery, useAddTermsMutation } from "../../RTK/services/dashboard/informationApis/termsApis";
 import toast from "react-hot-toast";
 import JoditComponent from "../../Components/Shared/JoditComponent";
 import { PageContent, PageLayout } from "../../Layout/PageLayOut";
 import { primaryBtn } from "../../constant/btnStyle";
+import { useGetTermsAndConditionsQuery, useUpdateTermsAndConditionsMutation } from "../../redux/services/manageApis";
 
 const TermsAndConditions = () => {
-  // const { data: terms, isLoading } = useGetTermsQuery();
-  // const [addTerms, { isLoading: addLoading }] = useAddTermsMutation();
+  const { data: terms, isLoading } = useGetTermsAndConditionsQuery(undefined);
+  const [addTerms, { isLoading: addLoading }] = useUpdateTermsAndConditionsMutation();
   const [content, setContent] = useState("");
+  
   useEffect(() => {
-    setContent("terms and conditions");
-  }, []);
+    setContent(terms?.data?.description);
+  }, [terms]);
+
   const handleSubmit = async () => {
     try {
       if (!content) {
@@ -21,14 +23,13 @@ const TermsAndConditions = () => {
       const data = {
         description: content,
       }
-      console.log(data)
-      // await addTerms(data).unwrap().then((res) => {
-      //   if (res?.success) {
-      //     toast.success(res?.message || "Terms and Conditions updated successfully");
-      //   } else {
-      //     throw new Error(res?.message || "Failed to update Terms and Conditions");
-      //   }
-      // });
+      await addTerms(data).unwrap().then((res) => {
+        if (res?.success) {
+          toast.success(res?.message || "Terms and Conditions updated successfully");
+        } else {
+          throw new Error(res?.message || "Failed to update Terms and Conditions");
+        }
+      });
     } catch (error: any) {
       toast.error(error?.message || "Failed to update Terms and Conditions");
     }
@@ -40,8 +41,8 @@ const TermsAndConditions = () => {
         <Button
           size="large"
           onClick={() => handleSubmit()}
-          // disabled={isLoading || addLoading}
-          // loading={isLoading || addLoading}
+          disabled={isLoading || addLoading}
+          loading={isLoading || addLoading}
           style={primaryBtn}
         >
           Submit

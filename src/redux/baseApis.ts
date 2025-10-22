@@ -21,7 +21,8 @@ const baseApis = createApi({
         'profile',
         'subscription',
         'category',
-        'member'
+        'member',
+        'nomination'
     ],
     endpoints: () => ({}),
 });

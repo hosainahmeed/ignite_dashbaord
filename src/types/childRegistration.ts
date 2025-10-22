@@ -1,20 +1,22 @@
 export interface ChildRegistrationData {
-    _id: string;
-    childFirstName: string;
-    childLastName: string;
-    childDateOfBirth: string;
-    gender: 'Male' | 'Female' | 'Other';
-    childSport: string;
-    parentGuardianFirstName: string;
-    parentGuardianLastName: string;
-    parentGuardianEmail: string;
-    parentGuardianStreetAddress: string;
-    parentGuardianCityState: string;
-    parentGuardianZipPostalCode: string;
-    annualHouseholdIncome: string;
-    showcaseVideosOrSocialMediaLink: string;
-    childStory: string;
-    showcasingOptIn: 'Yes' | 'No';
-    placement: 'Not Placed' | 'Placed' | string;
-    createdAt: string;
+    _id: string,
+    childFirstName: string,
+    childLastName: string,
+    childSport: string,
+    dateOfBirth: string,
+    gender: string,
+    guardianFirstName: string,
+    guardianLastName: string,
+    guardianEmail: string,
+    guardianStreetAddress: string,
+    guardianCityS: string,
+    guardianZipCode: string,
+    guardianState: string,
+    annualHouseHoldIncome: number,
+    showcaseVideoLink: string,
+    childStory: string,
+    isPlaced: boolean,
+    createdAt: string,
+    updatedAt: string,
+    age: number
 }

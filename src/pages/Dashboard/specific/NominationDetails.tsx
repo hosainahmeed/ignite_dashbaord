@@ -1,42 +1,40 @@
 import { useParams } from "react-router-dom";
 import { PageContent, PageLayout } from "../../../Layout/PageLayOut"
+import { useGetSingleNominationQuery } from "../../../redux/services/nominationApis";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
-import { registrationData } from "../../../Components/ui/tables/NominationsTable";
-import { useEffect, useState } from "react";
+import { Card } from "antd";
 
 
 function NominationDetails() {
   const { id } = useParams();
+  const { data: singleNominationData, isLoading } = useGetSingleNominationQuery(id as string, { skip: !id })
 
-  const [user, setUser] = useState<ChildRegistrationData | null | undefined>(null);
-  console.log(user)
-  useEffect(() => {
-    const user = registrationData.find((user) => user?._id === id)
-    console.log(user)
-    setUser(user)
-  }, [id])
-
-
+  const data: ChildRegistrationData = singleNominationData?.data
+  const DetailsData = [
+    { title: "Child’s Sport", description: data?.childSport ?? 'N/A' },
+    { title: "Child’s First Name", description: data?.childFirstName ?? 'N/A' },
+    { title: "Child’s Last Name", description: data?.childLastName ?? 'N/A' },
+    { title: "Child’s Date of Birth", description: data?.dateOfBirth ?? 'N/A' },
+    { title: "Child’s Gender", description: data?.gender ?? 'N/A' },
+    { title: "Parent/Guardian First Name", description: data?.guardianFirstName ?? 'N/A' },
+    { title: "Parent/Guardian Last Name", description: data?.guardianLastName ?? 'N/A' },
+    { title: "Parent/Guardian Email", description: data?.guardianEmail ?? 'N/A' },
+    { title: "Parent/Guardian street address", description: data?.guardianStreetAddress ?? 'N/A' },
+    { title: "Parent/Guardian City / State", description: data?.guardianCityS ?? 'N/A' },
+    { title: "Annual Household Income", description: data?.annualHouseHoldIncome ?? 'N/A' },
+    { title: "Showcase Videos or Social Media link", description: data?.showcaseVideoLink ?? 'N/A' },
+  ]
   return (
     <PageLayout title="Nomination Details">
       <PageContent>
         <div className="grid grid-cols-2 gap-4">
-          <DetailsCard title="Child’s Sport" description={user?.childSport ?? 'N/A'} />
-          <DetailsCard title="Child’s First Name" description={user?.childFirstName ?? 'N/A'} />
-          <DetailsCard title="Child’s Last Name" description={user?.childLastName ?? 'N/A'} />
-          <DetailsCard title="Child’s Date of Birth" description={user?.childDateOfBirth ?? 'N/A'} />
-          <DetailsCard title="Child’s Gender" description={user?.gender ?? 'N/A'} />
-          <DetailsCard title="Parent/Guardian First Name" description={user?.parentGuardianFirstName ?? 'N/A'} />
-          <DetailsCard title="Parent/Guardian Last Name" description={user?.parentGuardianLastName ?? 'N/A'} />
-          <DetailsCard title="Parent/Guardian Email" description={user?.parentGuardianEmail ?? 'N/A'} />
-          <DetailsCard title="Parent/Guardian street address" description={user?.parentGuardianStreetAddress ?? 'N/A'} />
-          <DetailsCard title="Parent/Guardian City / State" description={user?.parentGuardianCityState ?? 'N/A'} />
-          <DetailsCard title="Annual Household Income" description={user?.annualHouseholdIncome ?? 'N/A'} />
-          <DetailsCard title="Showcase Videos or Social Media link" description={user?.showcaseVideosOrSocialMediaLink ?? 'N/A'} />
+          {DetailsData.map((item, index) => (
+            <DetailsCard loading={isLoading} key={index} title={item.title} description={item.description} />
+          ))}
         </div>
         <div className="p-4 border border-[#FFDAD9] rounded-xl bg-[#fff]">
           <h1 className="font-bold">Child’s Story</h1>
-          <div dangerouslySetInnerHTML={{ __html: user?.childStory ?? '' }} />
+          <div dangerouslySetInnerHTML={{ __html: data?.childStory ?? '' }} />
         </div>
       </PageContent>
     </PageLayout>
@@ -45,12 +43,18 @@ function NominationDetails() {
 
 export default NominationDetails
 
-const DetailsCard = ({ title, description }: { title: string, description: string }) => {
+const DetailsCard = ({ title, description, loading }: { title: string, description: string | number, loading?: boolean }) => {
   return (
-    <div
-      className="p-4 border border-[#FFDAD9] rounded-xl bg-[#fff]">
-      <p className="font-bold">{title}</p>
-      <p className="text-gray-600">{description}</p>
-    </div>
+    <>
+      {
+        loading ? <Card loading /> : (
+          <div
+            className="p-4 border border-[#FFDAD9] rounded-xl bg-[#fff]">
+            <p className="font-bold">{title}</p>
+            <p className="text-gray-600">{description}</p>
+          </div>
+        )
+      }
+    </>
   )
 }

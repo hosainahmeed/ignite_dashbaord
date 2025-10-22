@@ -1,4 +1,4 @@
-import { Space, Button } from "antd";
+import { Space, Button, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
 import { ViewDetailIcon } from "../icons/SvgIcons";
@@ -36,19 +36,22 @@ export default function nominationsTableColumns(
         },
         {
             title: "Placement",
-            dataIndex: 'placement',
-            key: 'placement',
+            dataIndex: 'isPlaced',
+            key: 'isPlaced',
+            render: (isPlaced: boolean) => {
+                return isPlaced ? <Tag color="green">Placed</Tag> : <Tag color="red">Not Placed</Tag>;
+            },
         },
         {
             title: "Parent/Guardian",
-            dataIndex: 'parentGuardianFirstName',
-            key: 'parentGuardianFirstName',
-            render: (parentGuardianFirstName, record) => <span>{parentGuardianFirstName + ' ' + record.parentGuardianLastName}</span>,
+            dataIndex: 'guardianFirstName',
+            key: 'guardianFirstName',
+            render: (_, record) => <span>{record?.guardianFirstName + ' ' + record?.guardianLastName}</span>,
         },
         {
             title: "Email",
-            dataIndex: 'parentGuardianEmail',
-            key: 'parentGuardianEmail',
+            dataIndex: 'guardianEmail',
+            key: 'guardianEmail',
         },
         {
             title: "Action",

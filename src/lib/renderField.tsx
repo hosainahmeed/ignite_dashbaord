@@ -28,27 +28,29 @@ export type Field = TextField | PasswordField | TextareaField | NumberField | Da
 
 export const renderField = ({
     field,
-    className
+    className,
+    onChange
 }: {
     field: Field;
     className?: string;
+    onChange?: (value: any) => void;
 }): React.ReactNode => {
     switch (field.type) {
         case "text":
-            return <Input size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <Input onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "password":
-            return <Input.Password size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <Input.Password onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "textarea":
-            return <Input.TextArea size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <Input.TextArea onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "number":
-            return <InputNumber size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <InputNumber onChange={(e) => onChange?.(e)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "select":
             return (
-                <Select placeholder="Select" size="large" className={cn("", className)} key={field.key} {...field.props}>
+                <Select onChange={(e) => onChange?.(e)} placeholder="Select" size="large" className={cn("", className)} key={field.key} {...field.props}>
                     {field.options.map((opt) => (
                         <Select.Option key={String(opt.value)} value={opt.value}>
                             {opt.label}
@@ -58,7 +60,7 @@ export const renderField = ({
             );
 
         case "date":
-            return <DatePicker size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <DatePicker onChange={(e) => onChange?.(e)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         default:
             return null;

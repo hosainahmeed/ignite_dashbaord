@@ -3,27 +3,30 @@ import { renderField } from "../../../lib/renderField";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
 import { useNavigate } from "react-router-dom";
 import nominationsTableColumns from "../columns/NominationsTableColumns";
+import { useGetAllNominationQuery } from "../../../redux/services/nominationApis";
 
 export const registrationData: ChildRegistrationData[] = [
   {
-    _id: "1",
-    childFirstName: "Wade",
-    childLastName: "Warren",
-    childDateOfBirth: "26-03-25",
+    _id: "68f7122f4ebe449fff7bfccc",
+    childFirstName: "Hosain",
+    childLastName: "Ahmed",
+    childSport: "68eb546a72c6b441715602ee",
+    dateOfBirth: "2002-05-08T00:00:00.000Z",
     gender: "Male",
-    childSport: "Track & Field",
-    parentGuardianFirstName: "Ralph",
-    parentGuardianLastName: "Edwards",
-    parentGuardianEmail: "matthew.martin15@gmail.com",
-    parentGuardianStreetAddress: "123 Elm Street, Apt 2B",
-    parentGuardianCityState: "Chicago, IL USA",
-    parentGuardianZipPostalCode: "60616",
-    annualHouseholdIncome: "$45,000",
-    showcaseVideosOrSocialMediaLink: "http://youtube.com/alex-baseball-highlights",
-    childStory: "Alex has shown exceptional interest in baseball since age 7. Despite financial challenges, he continues to train daily and dreams of playing competitively. We believe being part of an academy will provide him the exposure and structured training he needs.",
-    showcasingOptIn: "Yes",
-    placement: "Not Placed",
-    createdAt: "2025-09-15T01:29:19.326Z",
+    guardianFirstName: "Hosain",
+    guardianLastName: "Ali",
+    guardianEmail: "a@yopmail.com",
+    guardianStreetAddress: "Rampura-Khilgaon -Notun Rasta Rd",
+    guardianCityS: "Dhaka",
+    guardianZipCode: "1207",
+    guardianState: "Dhaka",
+    annualHouseHoldIncome: 445,
+    showcaseVideoLink: "https://cdn.pixabay.com/video/2023/01/23/147704-792078376_large.mp4",
+    childStory: "ignite-my-child",
+    isPlaced: false,
+    createdAt: "2025-10-21T04:55:11.978Z",
+    updatedAt: "2025-10-21T04:55:11.978Z",
+    age: 23
   }
 
 ];
@@ -65,7 +68,7 @@ const placementOption = [
 ]
 
 function NominationsTable() {
-
+  const { data: nominationsData, isLoading } = useGetAllNominationQuery(undefined)
   const navigate = useNavigate();
   const handleAction = (action: "view" | "block", record: ChildRegistrationData) => {
     if (action === "view") {
@@ -88,7 +91,8 @@ function NominationsTable() {
             options: allSportOption,
             props: { placeholder: "All Sports" }
           },
-          className: "w-full"
+          className: "w-full",
+          onChange: (value) => console.log(value)
         })}
         {renderField({
           field: {
@@ -98,7 +102,8 @@ function NominationsTable() {
             options: ageOption,
             props: { placeholder: "Any Age" }
           },
-          className: "w-full"
+          className: "w-full",
+          onChange: (value) => console.log(value)
         })}
         {renderField({
           field: {
@@ -108,7 +113,8 @@ function NominationsTable() {
             options: genderOption,
             props: { placeholder: "All Gender" }
           },
-          className: "w-full"
+          className: "w-full",
+          onChange: (value) => console.log(value)
         })}
         {renderField({
           field: {
@@ -118,7 +124,8 @@ function NominationsTable() {
             options: placementOption,
             props: { placeholder: "All Placement" }
           },
-          className: "w-full"
+          className: "w-full",
+          onChange: (value) => console.log(value)
         })}
         {renderField({
           field: {
@@ -127,7 +134,8 @@ function NominationsTable() {
             label: "Search By Location",
             props: { placeholder: "Search By Location", onChange: (e) => console.log(e.target.value) },
           },
-          className: "w-full"
+          className: "w-full",
+          onChange: (value) => console.log(value)
         })}
         {renderField({
           field: {
@@ -136,16 +144,19 @@ function NominationsTable() {
             label: "Search By Name",
             props: { placeholder: "Search By Name", onChange: (e) => console.log(e.target.value) },
           },
-          className: "w-full"
+          className: "w-full",
+          onChange: (value) => console.log(value)
         })}
 
       </div>
-      <Table bordered
+      <Table
+        bordered
+        loading={isLoading}
         scroll={{ x: "max-content" }}
         columns={nominationsTableColumns(handleAction)}
-        dataSource={registrationData}
+        dataSource={nominationsData?.data?.data?.result}
         pagination={false}
-        rowKey="childFirstName"
+        rowKey="_id"
       />
     </>
   );

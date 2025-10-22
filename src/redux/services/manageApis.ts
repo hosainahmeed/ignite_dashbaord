@@ -50,7 +50,7 @@ const manageApis = baseApis.injectEndpoints({
         updateFaq: builder.mutation({
             query: ({ data, id }) => ({
                 url: `/faq/update/${id}`,
-                method: 'POST',
+                method: 'PATCH',
                 body: data
             }),
             invalidatesTags: ['faq']

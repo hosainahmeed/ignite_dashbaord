@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -14,43 +14,35 @@ import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { PageLayout, PageContent } from "../../Layout/PageLayOut";
 import toast from "react-hot-toast";
 import { primaryBtn, secondaryBtn } from "../../constant/btnStyle";
+import {
+  useGetFaqQuery,
+  useCreateFaqMutation,
+  useUpdateFaqMutation,
+  useDeleteFaqMutation
+} from "../../redux/services/manageApis";
 
 const { Paragraph } = Typography;
-
-/* ---------- FAQ Type ---------- */
 interface IFaq {
-  _id: string;
-  question: string;
-  description: string;
+  _id: string,
+  question: string,
+  answer: string,
 }
 
-/* ---------- Component ---------- */
-const FAQ: React.FC = () => {
-  /* Dummy initial FAQs */
-  const [faqs, setFaqs] = useState<IFaq[]>([
-    {
-      _id: "1",
-      question: "What is your return policy?",
-      description:
-        "We accept returns within 30 days of purchase with a valid receipt.",
-    },
-    {
-      _id: "2",
-      question: "How can I contact support?",
-      description:
-        "You can contact our support team via email at support@example.com.",
-    },
-  ]);
+const FAQ = () => {
+  const { data: faqsData, isLoading } = useGetFaqQuery(undefined);
+  const [createFaq, { isLoading: createLoading }] = useCreateFaqMutation();
+  const [updateFaq, { isLoading: updateLoading }] = useUpdateFaqMutation();
+  const [deleteFaq, { isLoading: deleteLoading }] = useDeleteFaqMutation();
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<IFaq | null>(null);
   const [form] = Form.useForm<IFaq>();
 
-  /* ---------- Handlers ---------- */
   const handleOpenModal = (item?: IFaq) => {
     setEditingItem(item || null);
     setIsModalOpen(true);
-    form.setFieldsValue(item || { question: "", description: "" });
+    form.setFieldsValue(item || { question: "", answer: "" });
   };
 
   const handleCloseModal = () => {
@@ -59,37 +51,54 @@ const FAQ: React.FC = () => {
     form.resetFields();
   };
 
-  const handleSubmit = (values: Omit<IFaq, "_id">) => {
-    if (editingItem) {
-      // Update
-      setFaqs((prev) =>
-        prev.map((faq) =>
-          faq._id === editingItem._id ? { ...faq, ...values } : faq
-        )
-      );
-      toast.success("FAQ updated successfully");
-    } else {
-      // Add new
-      const newFaq: IFaq = {
-        _id: crypto.randomUUID(),
-        ...values,
-      };
-      setFaqs((prev) => [...prev, newFaq]);
-      toast.success("FAQ added successfully");
+  const handleSubmit = async (values: Omit<IFaq, "_id">) => {
+    try {
+      if (editingItem) {
+        if (!editingItem?._id) {
+          throw new Error("Please enter question and answer");
+        }
+        if (!values.question || !values.answer) {
+          throw new Error("Please enter question and answer");
+        }
+        const data = {
+          question: values.question,
+          answer: values.answer
+        }
+        const res = await updateFaq({ id: editingItem._id, data }).unwrap()
+        if (!res?.success) {
+          throw new Error(res?.message || "Failed to update FAQ");
+        }
+        toast.success("FAQ updated successfully");
+        handleCloseModal();
+      } else {
+        const res = await createFaq(values).unwrap()
+        if (!res?.success) {
+          throw new Error(res?.message || "Failed to add FAQ");
+        }
+        toast.success("FAQ added successfully");
+        handleCloseModal();
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message || "Something went wrong while FAQ management");
     }
-    handleCloseModal();
   };
 
-  const handleDelete = (item: IFaq) => {
-    setFaqs((prev) => prev.filter((faq) => faq._id !== item._id));
-    toast.success("FAQ deleted successfully");
+  const handleDelete = async (item: IFaq) => {
+    try {
+      const res = await deleteFaq(item._id).unwrap()
+      if (res?.success) {
+        toast.success(res?.message || "FAQ deleted successfully");
+      } else {
+        throw new Error(res?.message || "Failed to delete FAQ");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message || "Something went wrong while FAQ management");
+    }
   };
 
-  /* ---------- Render ---------- */
   return (
     <PageLayout title="Frequently Asked Questions">
       <PageContent>
-        {/* Add Button */}
         <div className="flex items-center justify-between mb-6">
           <Button
             style={primaryBtn}
@@ -100,11 +109,11 @@ const FAQ: React.FC = () => {
           </Button>
         </div>
 
-        {/* FAQ List */}
-        {faqs.length ? (
+        {faqsData?.data.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {faqs.map((item) => (
+            {faqsData?.data.map((item: IFaq) => (
               <Card
+                loading={deleteLoading || isLoading}
                 key={item._id}
                 className="transition-shadow duration-300 rounded-2xl"
                 title={
@@ -134,7 +143,7 @@ const FAQ: React.FC = () => {
                 <Paragraph
                   ellipsis={{ rows: 3, expandable: true, symbol: "more" }}
                 >
-                  {item.description}
+                  {item.answer}
                 </Paragraph>
               </Card>
             ))}
@@ -172,7 +181,7 @@ const FAQ: React.FC = () => {
             </Form.Item>
 
             <Form.Item
-              name="description"
+              name="answer"
               label="Answer"
               rules={[{ required: true, message: "Please enter an answer" }]}
             >
@@ -186,6 +195,7 @@ const FAQ: React.FC = () => {
                   type="primary"
                   htmlType="submit"
                   style={primaryBtn}
+                  loading={createLoading || updateLoading}
                 >
                   {editingItem ? "Update FAQ" : "Create FAQ"}
                 </Button>

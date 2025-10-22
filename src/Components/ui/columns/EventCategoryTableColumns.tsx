@@ -3,17 +3,18 @@ import type { ColumnsType } from "antd/es/table";
 import { EditIcon } from "../icons/SvgIcons";
 import { FaTrash } from "react-icons/fa";
 import type { IigniteTeam } from "../../../types/category";
+import { imageUrl } from "../../../utils/imageHandler";
 
 export default function IgniteTeamTableColumns({ handleEditCategory, handleDeleteCategory }:
-    { handleEditCategory: (record: IigniteTeam) => void, handleDeleteCategory: (id: number) => void }): ColumnsType<IigniteTeam> {
+    { handleEditCategory: (record: IigniteTeam) => void, handleDeleteCategory: (id: string) => void }): ColumnsType<IigniteTeam> {
     return [
         {
             title: "Photo",
-            dataIndex: "photo_url",
-            key: "photo_url",
+            dataIndex: "profile_image",
+            key: "profile_image",
             render: (_, record) => (
                 <img
-                    src={record.photo_url}
+                    src={imageUrl({ image: record.profile_image })}
                     alt={record.name}
                     style={{ width: "50px", height: "50px", objectFit: "cover" }}
                 />
@@ -46,7 +47,7 @@ export default function IgniteTeamTableColumns({ handleEditCategory, handleDelet
                     </Tooltip>
                     <Popconfirm
                         title="Are you sure you want to delete this Ignite member?"
-                        onConfirm={() => handleDeleteCategory(record?.id)}
+                        onConfirm={() => handleDeleteCategory(record?._id)}
                         placement="bottomRight"
                         okText="Yes"
                         cancelText="No"

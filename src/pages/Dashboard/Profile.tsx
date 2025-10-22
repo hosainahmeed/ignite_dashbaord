@@ -1,24 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import ProfileEdit from '../../Components/ui/profile-component/ProfileEdit.js';
 import ChangePassword from '../../Components/ui/profile-component/ChangePassword.js';
 import { imageUrl } from '../../utils/imageHandler.js';
 import { CameraIcon } from '../../Components/ui/icons/SvgIcons.js';
+import { useUserMyProfileQuery } from '../../redux/services/profileApis.js';
 
 const Tabs = ['Edit Profile', 'Change Password'];
 
 const Profile = () => {
   const [tab, setTab] = useState(Tabs[0]);
-  // const { data: profileData, isLoading } = useGetProfileDataQuery({});
+  const { data: profileData, isLoading: profileDataLoading } = useUserMyProfileQuery(undefined)
+
   const [image, setImage] = useState<File | null>(null);
-  const profileData = {
-    data: {
-      name: 'Hosain',
-      email: 'hosain@gmail.com',
-      profile_image: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
-    }
-  }
+
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -91,14 +87,15 @@ const Profile = () => {
 
       <div className="max-w-[700px] mx-auto bg-[var(--black-200)] p-4 rounded-md">
         {tab === 'Edit Profile' ? (
-          // isLoading ? (
-          //   <span className="loader-black"></span>
-          // ) : (
-          <ProfileEdit
-            image={image}
-            data={profileData?.data}
-          />
-          // )
+          profileDataLoading ? (
+            <Card loading />
+          ) : (
+            <ProfileEdit
+              image={image}
+              data={profileData?.data}
+              setImage={setImage}
+            />
+          )
         ) : (
           <ChangePassword />
         )}

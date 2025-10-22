@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Notifications from "../ui/Notifications/Notifications";
 import { IMAGE } from "../../assets/index.image";
 import Cookies from "js-cookie";
+import { useUserMyProfileQuery } from "../../redux/services/profileApis";
 
 export const handleLogout = () => {
   localStorage.removeItem("accessToken");
@@ -15,11 +16,12 @@ export const handleLogout = () => {
 };
 
 function Header() {
+  const { data: profileData, isLoading: profileDataLoading } = useUserMyProfileQuery(undefined)
 
   const user = {
-    name: "Hosain",
-    avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-    email: "hosain@gmail.com",
+    name: profileDataLoading ? 'Admin' : profileData?.data?.name,
+    avatar: profileDataLoading ? 'https://cdn-icons-png.flaticon.com/512/149/149071.png' : profileData?.data?.profile_image,
+    email: profileDataLoading ? 'Admin@Admin.com' : profileData?.data?.email,
   }
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);

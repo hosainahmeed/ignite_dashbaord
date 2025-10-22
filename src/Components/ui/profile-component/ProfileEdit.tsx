@@ -1,22 +1,25 @@
 import { Button, Form, Input } from 'antd';
+import { useUpdateProfileMutation } from '../../../redux/services/profileApis';
+import toast from 'react-hot-toast';
 
-const ProfileEdit = ({ image, data }: {
+const ProfileEdit = ({ image, data, setImage }: {
   image: File | null;
   data: any;
+  setImage: (image: File | null) => void;
 }) => {
   const [form] = Form.useForm();
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+
   const onFinish = async ({ name }: { name: string }) => {
-    console.log(name);
+    if (name === '') {
+      throw new Error("Name is required");
+    }
     const updateData = {
       name: name,
     };
-    console.log(updateData);
     const formData = new FormData();
-    if (updateData) {
-      Object.keys(updateData).forEach((key) => {
-        formData?.append(key, updateData[key as keyof typeof updateData]);
-      });
-    }
+    formData.append('data', JSON.stringify(updateData));
 
     if (image === null) {
       formData?.delete('profile_image');
@@ -25,9 +28,17 @@ const ProfileEdit = ({ image, data }: {
     }
 
     try {
-      // update profile logic here
-    } catch (error) {
-      console.error('Failed to update profile:', error);
+      const res = await updateProfile(formData).unwrap();
+      if (!res?.success) {
+        throw new Error(res?.message || "Failed to update profile.");
+      }
+      if (res?.success) {
+        toast.success("Profile updated successfully.");
+        form.resetFields();
+        setImage(null);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message || "Failed to update profile.");
     }
   };
   console.log(data);
@@ -72,6 +83,8 @@ const ProfileEdit = ({ image, data }: {
 
         <Button
           htmlType="submit"
+          loading={isLoading}
+          disabled={isLoading}
           style={{
             backgroundColor: 'var(--bg-red-high)',
             color: '#fff',

@@ -39,14 +39,14 @@ function FormWithImage({
     console.log(fileList)
     useEffect(() => {
         if (record) {
-            form.setFieldsValue({ name: record.name });
-            if (record.photo_url) {
+            form.setFieldsValue({ name: record.name, position: record.position });
+            if (record.profile_image) {
                 setFileList([
                     {
                         uid: "-1",
                         name: record.name,
                         status: "done",
-                        url: imageUrl({ image: record.photo_url }),
+                        url: imageUrl({ image: record.profile_image }),
                     },
                 ]);
             }
@@ -97,6 +97,13 @@ function FormWithImage({
                 >
                     <Input size="large" placeholder="Enter category name" />
                 </Form.Item>
+                <Form.Item
+                    name="position"
+                    label="Position"
+                    rules={[{ required: true, message: "Please input position!" }]}
+                >
+                    <Input size="large" placeholder="Enter position" />
+                </Form.Item>
 
                 <Form.Item>
                     <Button
@@ -104,7 +111,6 @@ function FormWithImage({
                         htmlType="submit"
                         loading={loading}
                         block
-                        onClick={() => onFinish(form.getFieldsValue())}
                     >
                         {btnText}
                     </Button>

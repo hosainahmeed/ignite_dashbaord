@@ -5,23 +5,47 @@ import { PageContent, PageLayout } from "../../Layout/PageLayOut"
 import { useCallback, useState } from "react";
 import type { IigniteTeam } from "../../types/category";
 import FormWithImage from "../../Components/ui/modals/FormWithImage";
+import { useCreateMemberMutation } from "../../redux/services/userApis";
+import toast from "react-hot-toast";
 
 function IgniteTeam() {
   const [form] = Form.useForm();
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [record, setRecord] = useState<IigniteTeam | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const handleAddCategory = useCallback(() => {
-    setIsUpdate(false);
     setRecord(null);
     setModalVisible(true);
   }, []);
 
+  const [createMember, { isLoading: isCreateMemberLoading }] = useCreateMemberMutation()
+
   const handleSubmit = useCallback(
     async (values: any) => {
-      console.log(values)
+      try {
+        if (values?.name === '' || values?.position === '') {
+          throw new Error("Name and position are required");
+        }
+        const formData = new FormData();
+        formData.append('data', JSON.stringify(values));
+        if (values?.avatar?.file === null || values?.avatar?.file === undefined) {
+          formData?.delete('profile_image');
+        } else {
+          formData?.append('profile_image', values?.avatar?.file);
+        }
+        const res = await createMember(formData).unwrap()
+        if (!res?.success) {
+          throw new Error(res?.message)
+        }
+        toast.success(res?.message || "Member updated successfully")
+        setModalVisible(false)
+        form.resetFields()
+      } catch (error: any) {
+        toast.error(error?.data?.message || error?.message || "something went wrong while update member")
+        setModalVisible(false)
+        form.resetFields()
+      }
     },
-    []
+    [createMember]
   );
   return (
     <PageLayout
@@ -42,10 +66,10 @@ function IgniteTeam() {
           open={modalVisible}
           hide={setModalVisible}
           onFinish={handleSubmit}
-          title={isUpdate ? "Update Ignite Team" : "Add New Ignite Team"}
-          btnText={isUpdate ? "Update" : "Add New"}
+          title="Add New Ignite Team"
+          btnText="Add New"
           record={record}
-          loading={isUpdate}
+          loading={isCreateMemberLoading}
         />
       </PageContent>
     </PageLayout>

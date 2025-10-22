@@ -3,8 +3,10 @@ export interface IsportCategory {
     name: string;
 }
 export interface IigniteTeam {
-    id: number;
+    _id: string;
     name: string;
-    photo_url: string;
     position: string;
+    profile_image: string;
+    createdAt: string;
+    updatedAt: string;
 }

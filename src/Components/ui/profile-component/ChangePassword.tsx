@@ -1,10 +1,9 @@
 import { Button, Form, Input, message } from "antd";
-// import { usePatchNewPasswordMutation } from "../../../Redux/services/AuthApis/authApis";
+import { useChangePasswordMutation } from "../../../redux/services/authApis";
 
 const ChangePassword = () => {
   const [form] = Form.useForm();
-  // const [setNewPassword, { isLoading: isNewPassChange }] =
-  //   usePatchNewPasswordMutation({});
+  const [setNewPassword, { isLoading: isNewPassChange }] = useChangePasswordMutation();
 
   const onFinish = async ({ oldPassword, newPassword, confirmPassword }: { oldPassword: string, newPassword: string, confirmPassword: string }) => {
     const ChangePasswordDatas = {
@@ -13,12 +12,15 @@ const ChangePassword = () => {
       confirmPassword: confirmPassword,
     };
     try {
-      console.log(ChangePasswordDatas);
-      // await setNewPassword(ChangePasswordDatas).unwrap();
-      message.success("Password Changed successfully.");
-    } catch (error) {
+      const res = await setNewPassword(ChangePasswordDatas).unwrap();
+      if (res?.success) {
+        message.success("Password Changed successfully.");
+      } else {
+        throw new Error(res?.message || "Failed to change Password.");
+      }
+    } catch (error: any) {
       console.error("Failed to change password:", error);
-      message.error("Failed to change Password.");
+      message.error(error?.data?.message || error?.message || "Failed to change Password.");
     }
   };
   return (
@@ -82,13 +84,13 @@ const ChangePassword = () => {
       <Button
         type="primary"
         htmlType="submit"
-        // disabled={isNewPassChange}
+        disabled={isNewPassChange}
         style={{
           backgroundColor: "var(--bg-red-high)",
           color: "#fff",
           height: 40,
         }}
-        // loading={isNewPassChange}
+        loading={isNewPassChange}
         className=" w-full"
       >
         Update password

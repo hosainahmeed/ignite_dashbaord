@@ -20,7 +20,7 @@ type NumberField = BaseField & { type: "number"; props?: InputNumberProps };
 type DateField = BaseField & { type: "date"; props?: DatePickerProps };
 type SelectField = BaseField & {
     type: "select";
-    options: { label: ReactNode; value: string | number }[];
+    options: { label: ReactNode; value: string | number | boolean }[];
     props?: SelectProps;
 };
 
@@ -29,11 +29,13 @@ export type Field = TextField | PasswordField | TextareaField | NumberField | Da
 export const renderField = ({
     field,
     className,
-    onChange
+    onChange,
+    isLoading
 }: {
     field: Field;
     className?: string;
     onChange?: (value: any) => void;
+    isLoading?: boolean;
 }): React.ReactNode => {
     switch (field.type) {
         case "text":
@@ -50,7 +52,7 @@ export const renderField = ({
 
         case "select":
             return (
-                <Select onChange={(e) => onChange?.(e)} placeholder="Select" size="large" className={cn("", className)} key={field.key} {...field.props}>
+                <Select loading={isLoading} onChange={(e) => onChange?.(e)} placeholder="Select" size="large" className={cn("", className)} key={field.key} {...field.props}>
                     {field.options.map((opt) => (
                         <Select.Option key={String(opt.value)} value={opt.value}>
                             {opt.label}

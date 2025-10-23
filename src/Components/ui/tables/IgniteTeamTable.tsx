@@ -1,4 +1,4 @@
-import { Form, Table } from "antd";
+import { Form, Table, type UploadFile } from "antd";
 import type { IigniteTeam } from "../../../types/category";
 import IgniteTeamTableColumns from "../columns/EventCategoryTableColumns";
 import { useCallback, useState } from "react";
@@ -14,6 +14,8 @@ function IgniteTeamTable() {
     const { data: memberData } = useGetAllMemberQuery(undefined)
     const [updateMember, { isLoading: isUpdateMemberLoading }] = useUpdateMemberMutation()
     const [deleteMember, { isLoading: isDeleteMemberLoading }] = useDeleteMemberMutation()
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+
     const handleEditCategory = useCallback((record: IigniteTeam) => {
         setRecord(record);
         setModalVisible(true);
@@ -59,10 +61,12 @@ function IgniteTeamTable() {
             }
             toast.success(res?.message || "Member updated successfully")
             setModalVisible(false)
+            setFileList([])
             form.resetFields()
         } catch (error: any) {
             toast.error(error?.data?.message || error?.message || "something went wrong while update member")
             setModalVisible(false)
+            setFileList([])
             form.resetFields()
         }
     };
@@ -87,6 +91,8 @@ function IgniteTeamTable() {
                 title={"Update Ignite Team"}
                 record={record}
                 btnText={"Update"}
+                fileList={fileList}
+                setFileList={setFileList}
             />
         </>
     );

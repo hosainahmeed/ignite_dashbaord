@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Form, Input, Modal, Button, Upload } from "antd";
 import type { UploadFile } from "antd/es/upload/interface";
 import { UploadOutlined } from "@ant-design/icons";
@@ -22,6 +22,8 @@ interface CategoryFormProps {
     loading?: boolean;
     form: any;
     btnText: string;
+    fileList: UploadFile[];
+    setFileList: (fileList: UploadFile[]) => void;
 }
 
 
@@ -33,10 +35,10 @@ function FormWithImage({
     record,
     loading,
     form,
-    btnText
+    btnText,
+    fileList,
+    setFileList
 }: CategoryFormProps) {
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    console.log(fileList)
     useEffect(() => {
         if (record) {
             form.setFieldsValue({ name: record.name, position: record.position });
@@ -92,10 +94,10 @@ function FormWithImage({
 
                 <Form.Item
                     name="name"
-                    label="Category Name"
-                    rules={[{ required: true, message: "Please input category name!" }]}
+                    label="Name"
+                    rules={[{ required: true, message: "Please input name!" }]}
                 >
-                    <Input size="large" placeholder="Enter category name" />
+                    <Input size="large" placeholder="Enter name" />
                 </Form.Item>
                 <Form.Item
                     name="position"

@@ -15,7 +15,8 @@ export default function nominationsTableColumns(
         {
             title: "Sport",
             dataIndex: "childSport",
-            key: "childSport"
+            key: "childSport",
+            render: (childSport: { name: string }) => <span>{childSport?.name}</span>,
         },
         {
             title: "Apply Date",

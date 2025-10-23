@@ -1,49 +1,11 @@
-import { Table } from "antd";
+import { Skeleton, Table } from "antd";
 import { renderField } from "../../../lib/renderField";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
 import { useNavigate } from "react-router-dom";
 import nominationsTableColumns from "../columns/NominationsTableColumns";
 import { useGetAllNominationQuery } from "../../../redux/services/nominationApis";
-
-export const registrationData: ChildRegistrationData[] = [
-  {
-    _id: "68f7122f4ebe449fff7bfccc",
-    childFirstName: "Hosain",
-    childLastName: "Ahmed",
-    childSport: "68eb546a72c6b441715602ee",
-    dateOfBirth: "2002-05-08T00:00:00.000Z",
-    gender: "Male",
-    guardianFirstName: "Hosain",
-    guardianLastName: "Ali",
-    guardianEmail: "a@yopmail.com",
-    guardianStreetAddress: "Rampura-Khilgaon -Notun Rasta Rd",
-    guardianCityS: "Dhaka",
-    guardianZipCode: "1207",
-    guardianState: "Dhaka",
-    annualHouseHoldIncome: 445,
-    showcaseVideoLink: "https://cdn.pixabay.com/video/2023/01/23/147704-792078376_large.mp4",
-    childStory: "ignite-my-child",
-    isPlaced: false,
-    createdAt: "2025-10-21T04:55:11.978Z",
-    updatedAt: "2025-10-21T04:55:11.978Z",
-    age: 23
-  }
-
-];
-
-const allSportOption = [
-  { label: "All Sports", value: "all" },
-  { label: "Baseball", value: "baseball" },
-  { label: "Lacrosse", value: "lacrosse" },
-  { label: "Wrestling", value: "wrestling" },
-  { label: "Soccer", value: "soccer" },
-  { label: "Track & Field", value: "trackAndField" },
-  { label: "Basketball", value: "basketball" },
-  { label: "Tennis", value: "tennis" },
-  { label: "Swimming", value: "swimming" },
-  { label: "Gymnastics", value: "gymnastics" },
-  { label: "Football", value: "football" },
-]
+import { useAllCategoriesQuery } from "../../../redux/services/categoryApi";
+import { useState } from "react";
 
 const ageOption = [
   { label: "Any Age", value: "all" },
@@ -57,18 +19,34 @@ const ageOption = [
 
 const genderOption = [
   { label: "Any Gender", value: "all" },
-  { label: "Male", value: "male" },
-  { label: "Female", value: "female" },
+  { label: "Male", value: "Male" },
+  { label: "Female", value: "Female" },
 ]
 
 const placementOption = [
   { label: "All Placement", value: "all" },
-  { label: "Not Placed", value: "notPlaced" },
-  { label: "Placed", value: "placed" },
+  { label: "Not Placed", value: false },
+  { label: "Placed", value: true },
 ]
 
 function NominationsTable() {
-  const { data: nominationsData, isLoading } = useGetAllNominationQuery(undefined)
+  const [minAge, setMinAge] = useState<number | null>(null)
+  const [maxAge, setMaxAge] = useState<number | null>(null)
+  const [childSport, setChildSport] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState<string | null>(null)
+  const [gender, setGender] = useState<string | null>(null)
+  const [isPlaced, setIsPlaced] = useState<boolean | null>(null)
+
+  const queryParams = { minAge, maxAge, childSport, searchTerm, gender, isPlaced }
+  const params = Object.entries(queryParams).reduce((acc, [key, value]) => {
+    if (!(value === null || value === '')) {
+      return { ...acc, [key]: value }
+    }
+    return acc
+  }, {})
+  console.log(params)
+  const { data: nominationsData, isLoading } = useGetAllNominationQuery(params)
+  const { data: categoriesData, isLoading: categoriesLoading } = useAllCategoriesQuery(undefined)
   const navigate = useNavigate();
   const handleAction = (action: "view" | "block", record: ChildRegistrationData) => {
     if (action === "view") {
@@ -83,16 +61,17 @@ function NominationsTable() {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 justify-end">
-        {renderField({
+        {categoriesLoading ? <Skeleton.Input size="large" /> : renderField({
           field: {
             type: "select",
             key: "sportType",
             label: "All Sports",
-            options: allSportOption,
+            options: categoriesData?.data?.result?.map((item: any) => ({ label: item?.name, value: item?._id })),
             props: { placeholder: "All Sports" }
           },
           className: "w-full",
-          onChange: (value) => console.log(value)
+          isLoading: categoriesLoading as boolean,
+          onChange: (value) => setChildSport(value)
         })}
         {renderField({
           field: {
@@ -103,7 +82,16 @@ function NominationsTable() {
             props: { placeholder: "Any Age" }
           },
           className: "w-full",
-          onChange: (value) => console.log(value)
+          onChange: (value) => {
+            if (value === "all") {
+              setMinAge(null)
+              setMaxAge(null)
+            } else {
+              const ageRange = value.split("-")
+              setMinAge(Number(ageRange[0]))
+              setMaxAge(Number(ageRange[1]))
+            }
+          }
         })}
         {renderField({
           field: {
@@ -114,7 +102,13 @@ function NominationsTable() {
             props: { placeholder: "All Gender" }
           },
           className: "w-full",
-          onChange: (value) => console.log(value)
+          onChange: (value) => {
+            if (value === "all") {
+              setGender(null)
+            } else {
+              setGender(value)
+            }
+          }
         })}
         {renderField({
           field: {
@@ -125,27 +119,32 @@ function NominationsTable() {
             props: { placeholder: "All Placement" }
           },
           className: "w-full",
-          onChange: (value) => console.log(value)
+          onChange: (value) => {
+            if (value === "all") {
+              setIsPlaced(null)
+            } else {
+              setIsPlaced(value)
+            }
+          }
         })}
         {renderField({
           field: {
             type: "text",
             key: "location",
             label: "Search By Location",
-            props: { placeholder: "Search By Location", onChange: (e) => console.log(e.target.value) },
+            props: { placeholder: "Search By Location", allowClear: true, onChange: (e) => setSearchTerm(e.target.value) },
+
           },
           className: "w-full",
-          onChange: (value) => console.log(value)
         })}
         {renderField({
           field: {
             type: "text",
             key: "name",
             label: "Search By Name",
-            props: { placeholder: "Search By Name", onChange: (e) => console.log(e.target.value) },
+            props: { placeholder: "Search By Name", allowClear: true, onChange: (e) => setSearchTerm(e.target.value) },
           },
           className: "w-full",
-          onChange: (value) => console.log(value)
         })}
 
       </div>

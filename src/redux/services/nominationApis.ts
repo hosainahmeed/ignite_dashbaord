@@ -3,9 +3,10 @@ import baseApis from "../baseApis";
 const nominationApis = baseApis.injectEndpoints({
     endpoints: (build) => ({
         getAllNomination: build.query({
-            query: () => ({
+            query: (params: any) => ({
                 url: '/nomination/get-all',
                 method: 'GET',
+                params
             }),
             providesTags: ['nomination']
         }),

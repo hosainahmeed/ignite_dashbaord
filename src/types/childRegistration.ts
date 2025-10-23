@@ -2,7 +2,10 @@ export interface ChildRegistrationData {
     _id: string,
     childFirstName: string,
     childLastName: string,
-    childSport: string,
+    childSport: {
+        _id: string,
+        name: string,
+    },
     dateOfBirth: string,
     gender: string,
     guardianFirstName: string,

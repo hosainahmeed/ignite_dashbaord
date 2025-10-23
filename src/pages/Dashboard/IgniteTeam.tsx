@@ -1,4 +1,4 @@
-import { Form } from "antd";
+import { Form, type UploadFile } from "antd";
 import { FaPlus } from "react-icons/fa"
 import IgniteTeamTable from "../../Components/ui/tables/IgniteTeamTable"
 import { PageContent, PageLayout } from "../../Layout/PageLayOut"
@@ -12,6 +12,7 @@ function IgniteTeam() {
   const [form] = Form.useForm();
   const [record, setRecord] = useState<IigniteTeam | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const handleAddCategory = useCallback(() => {
     setRecord(null);
     setModalVisible(true);
@@ -39,10 +40,14 @@ function IgniteTeam() {
         toast.success(res?.message || "Member updated successfully")
         setModalVisible(false)
         form.resetFields()
+        setRecord(null)
+        setFileList([])
       } catch (error: any) {
         toast.error(error?.data?.message || error?.message || "something went wrong while update member")
         setModalVisible(false)
         form.resetFields()
+        setRecord(null)
+        setFileList([])
       }
     },
     [createMember]
@@ -70,6 +75,8 @@ function IgniteTeam() {
           btnText="Add New"
           record={record}
           loading={isCreateMemberLoading}
+          fileList={fileList}
+          setFileList={setFileList}
         />
       </PageContent>
     </PageLayout>

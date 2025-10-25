@@ -1,39 +1,46 @@
 export interface donationsRecord {
-    key?: string | number;
-    donor_name: string;
-    email: string;
-    fund_type: 'IGNITE Fund' | 'IGNITE a Child';
-    amount: string;
-    frequency: string;
-    fee_covered: boolean;
-    tier_selected: string,
-    date: string;
-    transaction_id: string;
-    createdAt: string;
+    _id: string,
+    donorName: string,
+    email: string,
+    amount: number,
+    fundType: 'IGNITE_FUND' | 'IGNITE_A_CHILD',
+    frequency: "One-time" | "Monthly" | "Weekly" | "Yearly",
+    freeCovered: true,
+    isPaid: false,
+    transactionId: string,
+    createdAt: string,
+    updatedAt: string,
 }
 
 export interface ClubAddress {
     streetAddress: string | null
     city: string | null
-    state: string | null
     zipCode: string | null
 }
 
+export interface sportsOfferedData {
+    _id: string,
+    name: string,
+    isDeleted: boolean,
+}
+
 export interface ClubRecord {
-    key?: string | number;
-    club_name: string;
-    sportOffered: string;
-    website: string;
-    joinFee: string;
-    joinDate: string;
+    _id: string;
+    name: string;
+    sportsOffered: sportsOfferedData[];
+    websiteLink: string;
+    fee: number;
     status: string;
-    email: string;
-    quantity: string;
-    club_website: string,
-    clubAddress: ClubAddress[]
     primaryContactName: string;
+    quantity: number;
     primaryContactEmail: string;
     primaryContactPhone: string;
-    competitionLevels: string;
+    locations: ClubAddress[];
+    competitionLevel: string[];
+    transactionId: string;
+    expireDate: string | null;
+    joinDate: string;
     createdAt: string;
+    updatedAt: string;
+    __v: number;
 }

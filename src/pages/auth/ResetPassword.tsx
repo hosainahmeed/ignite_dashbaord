@@ -1,20 +1,44 @@
 import { Button, Card, Form, Input, Typography } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { primaryBtn } from '../../constant/btnStyle';
+import { useResetPasswordMutation } from '../../redux/services/authApis';
+import toast from 'react-hot-toast';
 const { Title } = Typography;
 
 const ResetPassword = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [resetPassword, { isLoading: isResetPasswordLoading }] = useResetPasswordMutation()
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get('email');
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/login');
-    }, 1500);
+  const handleSubmit = async (values: any) => {
+    try {
+      if (['password', 'confirmPassword'].some(key => !values[key])) {
+        toast.error(`All fields are required`);
+        return;
+      }
+      if (values?.password !== values?.confirmPassword) {
+        toast.error('Passwords do not match');
+        return;
+      }
+      if (!email) {
+        toast.error('Email is required');
+        return;
+      }
+      const data = {
+        email: email,
+        password: values?.password,
+        confirmPassword: values?.confirmPassword
+      }
+      const res = await resetPassword(data).unwrap();
+      if (!res?.success) throw new Error(res?.message)
+      if (res?.success) {
+        toast.success(res?.data?.message || res?.message || "Password reset successfully.")
+        navigate('/login', { replace: true });
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message || "Failed to reset password.")
+    }
   };
 
   return (
@@ -48,8 +72,8 @@ const ResetPassword = () => {
             <Button
               size="large"
               htmlType="submit"
-              loading={isLoading}
-              disabled={isLoading}
+              loading={isResetPasswordLoading}
+              disabled={isResetPasswordLoading}
               style={primaryBtn}
               block
               className='!w-full'

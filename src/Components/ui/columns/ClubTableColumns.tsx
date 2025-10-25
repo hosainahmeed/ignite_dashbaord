@@ -1,6 +1,6 @@
 import { Space, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import type { ClubRecord } from "../../../types/User";
+import type { ClubRecord, sportsOfferedData } from "../../../types/User";
 import { ViewDetailIcon } from "../icons/SvgIcons";
 
 export default function clubTableColumns(
@@ -9,13 +9,18 @@ export default function clubTableColumns(
     return [
         {
             title: "Academy/Club Name",
-            dataIndex: "club_name",
-            key: "club_name",
+            dataIndex: "name",
+            key: "name",
         },
         {
             title: "Sport(s) Offered",
-            dataIndex: "sportOffered",
+            dataIndex: "sportsOffered",
             key: "sportOffered",
+            render: (sportsOffered: any) => {
+                return (
+                    sportsOffered?.length > 0 ? sportsOffered?.map((sport: sportsOfferedData) => sport?.name || "-").join(", ") : "-"
+                );
+            },
         },
         {
             title: "Join Date",
@@ -36,8 +41,8 @@ export default function clubTableColumns(
         },
         {
             title: "Email",
-            dataIndex: "email",
-            key: "email",
+            dataIndex: "primaryContactEmail",
+            key: "primaryContactEmail",
         },
         {
             title: "Status",

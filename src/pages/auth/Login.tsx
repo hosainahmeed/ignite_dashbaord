@@ -40,7 +40,7 @@ const Login = () => {
         Cookies.set('accessToken', res?.data?.accessToken)
       }
     } catch (error: any) {
-      toast.error(error?.message)
+      toast.error(error?.data?.message || error?.message || "Failed to login.")
     }
   };
 

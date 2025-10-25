@@ -17,7 +17,14 @@ const nominationApis = baseApis.injectEndpoints({
             }),
             providesTags: ['nomination']
         }),
+        markAsPlaced: build.mutation({
+            query: (id: string) => ({
+                url: `/nomination/mark-as-placed/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['nomination']
+        })
     })
 })
 
-export const { useGetAllNominationQuery, useGetSingleNominationQuery } = nominationApis
+export const { useGetAllNominationQuery, useGetSingleNominationQuery, useMarkAsPlacedMutation } = nominationApis

@@ -62,7 +62,7 @@ export default function nominationsTableColumns(
                     <Button
                         style={{
                             backgroundColor: '#D62828',
-                            color: 'white'
+                            color: 'white',
                         }}
                         icon={<ViewDetailIcon />}
                         onClick={() => onAction?.("view", record)}

@@ -9,35 +9,39 @@ export default function donationsTableColumns(
     return [
         {
             title: "Donor Name",
-            dataIndex: "donor_name",
-            key: "donor_name",
+            dataIndex: "donorName",
+            key: "donorName",
+            render: (donorName) => <span>{donorName || "N/A"}</span>,
         },
         {
             title: "Email",
             dataIndex: "email",
             key: "email",
+            render: (email) => <span>{email || "N/A"}</span>,
         },
         {
             title: "Fund Type",
-            dataIndex: "fund_type",
-            key: "email",
-            render: (email) => <span>{email}</span>,
+            dataIndex: "fundType",
+            key: "fundType",
+            render: (fundType) => <span>{fundType || "N/A"}</span>,
         },
         {
             title: "Amount",
             dataIndex: "amount",
             key: "amount",
+            render: (amount) => <span>{amount || "N/A"}</span>,
         },
         {
             title: "Frequency",
             dataIndex: "frequency",
             key: "frequency",
+            render: (frequency) => <span>{frequency || "N/A"}</span>,
         },
         {
             title: "Fee Covered",
-            dataIndex: "fee_covered",
-            key: "fee_covered",
-            render: (fee_covered) => <span>{fee_covered ? 'Yes (3%)' : 'No (0%)'}</span>,
+            dataIndex: "feeCovered",
+            key: "feeCovered",
+            render: (feeCovered) => <span>{feeCovered ? 'Yes (3%)' : 'No (0%)'}</span>,
         },
         {
             title: "Date",

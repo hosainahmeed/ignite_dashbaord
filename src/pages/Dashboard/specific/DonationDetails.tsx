@@ -1,40 +1,40 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { donationsData } from "../../../Components/ui/tables/DonationTable";
-import type { donationsRecord } from "../../../types/User";
 import { PageContent, PageLayout } from "../../../Layout/PageLayOut";
+import { useGetSingleDonationQuery } from "../../../redux/services/donationApis";
+import type { donationsRecord } from "../../../types/User";
 
 function DonationDetails() {
   const { id } = useParams();
+  const { data: user, isLoading } = useGetSingleDonationQuery(id as string, { skip: !id })
 
-  const [user, setUser] = useState<donationsRecord | null | undefined>(null);
-  console.log(user)
-  useEffect(() => {
-    const user = donationsData.find((user) => user?.key === Number(id))
-    console.log(user)
-    setUser(user)
-  }, [id])
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString();
   }
-
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  const data: donationsRecord = !isLoading && user?.data
+  const CardData: { title: string, description: string | number }[] = [
+    { title: "Donor Name", description: data?.donorName || "N/A" },
+    { title: "Donor Email", description: data?.email || "N/A" },
+    { title: "Fund Type", description: data?.fundType || "N/A" },
+    { title: "Donation Frequency", description: data?.frequency || "N/A" },
+    { title: "Subscription Expiry Date", description: data?.freeCovered ? 'Yes (3%)' : 'No (0%)' },
+    { title: "Total Paid", description: data?.amount || "N/A" },
+    { title: "Donation Date", description: formatDate(data?.createdAt) },
+    { title: "Payment Method", description: 'Stripe' },
+    { title: "Transaction ID", description: data?.transactionId || "N/A" },
+  ]
   return (
     <PageLayout title="Donation Details">
       <PageContent>
         {
-          user && (
+          data && (
             <div>
               <div className="grid grid-cols-2 mt-4 gap-4">
-                <DonationDetailsCard title="Donor Name" description={user?.donor_name} />
-                <DonationDetailsCard title="Donor Email" description={user?.email} />
-                <DonationDetailsCard title="Fund Type" description={user?.fund_type} />
-                <DonationDetailsCard title="Tier Selected" description={user?.tier_selected} />
-                <DonationDetailsCard title="Donation Frequency" description={user?.frequency} />
-                <DonationDetailsCard title="Subscription Expiry Date" description={user?.fee_covered ? 'Yes (3%)' : 'No (0%)'} />
-                <DonationDetailsCard title="Total Paid" description={user?.amount} />
-                <DonationDetailsCard title="Donation Date" description={formatDate(user?.createdAt)} />
-                <DonationDetailsCard title="Payment Method" description={'Stripe'} />
-                <DonationDetailsCard title="Transaction ID" description={'TXN123456'} />
+                {Array.isArray(CardData) && CardData.map((item, index) => (
+                  <DonationDetailsCard key={index} title={item.title} description={item.description} />
+                ))}
               </div>
             </div>
           )
@@ -47,7 +47,7 @@ function DonationDetails() {
 export default DonationDetails
 
 
-const DonationDetailsCard = ({ title, description }: { title: string, description: string }) => {
+const DonationDetailsCard = ({ title, description }: { title: string, description: string | number }) => {
   return (
     <div
       className="p-4 border border-[#FFDAD9] rounded-xl bg-[#fff]">

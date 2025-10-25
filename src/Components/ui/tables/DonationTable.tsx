@@ -4,27 +4,12 @@ import { renderField } from "../../../lib/renderField";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import donationsTableColumns from "../columns/DonationsTableColumns";
+import { useGetAllDonationsQuery } from "../../../redux/services/donationApis";
 
 interface donationTableTableProps {
     recentUser?: boolean;
 }
 // eslint-disable-next-line react-refresh/only-export-components
-export const donationsData: donationsRecord[] = [
-    {
-        key: 1,
-        amount: '$25.75',
-        date: '2025-09-15T01:29:19.326Z',
-        donor_name: 'Emily Carter',
-        email: 'emily@email.com',
-        fee_covered: true,
-        frequency: 'Monthly',
-        fund_type: 'IGNITE Fund',
-        tier_selected: 'Flame ($25)',
-        createdAt: '2025-09-15T01:29:19.326Z',
-        transaction_id: 'TXN123456'
-    },
-];
-
 const userTypeOptions = [
     { label: "All Donors", value: "all" },
     { label: "IGNITE Fund", value: "IGNITE Fund" },
@@ -32,9 +17,10 @@ const userTypeOptions = [
 ];
 function DonationTable({ recentUser }: donationTableTableProps) {
     const navigate = useNavigate();
+    const { data: donationsData, isLoading } = useGetAllDonationsQuery(undefined)
     const handleAction = (action: "view" | "block", record: donationsRecord) => {
         if (action === "view") {
-            navigate(`/donation/${record.key}`)
+            navigate(`/donation/${record._id}`)
         }
         if (action === "block") {
             toast.success("User Blocked")
@@ -65,9 +51,9 @@ function DonationTable({ recentUser }: donationTableTableProps) {
                 })}
 
             </div>}
-            <Table bordered
+            <Table bordered loading={isLoading}
                 columns={donationsTableColumns(handleAction)}
-                dataSource={donationsData}
+                dataSource={Array.isArray(donationsData?.data?.result) ? donationsData?.data?.result : []}
                 pagination={false}
                 rowKey="email"
             />

@@ -3,11 +3,12 @@ import { Button, Form, Input, Card, Typography, Divider } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { primaryBtn } from '../../constant/btnStyle';
+import { useForgotPasswordMutation } from '../../redux/services/authApis';
 
 const { Title } = Typography;
 
 const ForgetPassword = () => {
-
+  const [forgotPassword, { isLoading: isForgotPasswordLoading }] = useForgotPasswordMutation()
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -24,9 +25,14 @@ const ForgetPassword = () => {
     }
 
     try {
-      navigate('/otp');
-    } catch (error) {
-      console.log(error)
+      const res = await forgotPassword({ email: email }).unwrap();
+      if (!res?.success) throw new Error(res?.message)
+      if (res?.success) {
+        toast.success(res?.data?.message || res?.message || "Verification code sent successfully.")
+        navigate(`/otp?email=${email}`);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || error?.message || "Failed to send verification code.")
     }
   };
 
@@ -61,6 +67,7 @@ const ForgetPassword = () => {
               block
               type="primary"
               className='!w-full'
+              loading={isForgotPasswordLoading}
             >
               Continue
             </Button>

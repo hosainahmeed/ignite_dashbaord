@@ -1,4 +1,4 @@
-import { Skeleton, Table } from "antd";
+import { Table } from "antd";
 import { renderField } from "../../../lib/renderField";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
 import { useNavigate } from "react-router-dom";
@@ -61,12 +61,12 @@ function NominationsTable() {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 justify-end">
-        {categoriesLoading ? <Skeleton.Input size="large" /> : renderField({
+        {renderField({
           field: {
             type: "select",
             key: "sportType",
             label: "All Sports",
-            options: categoriesData?.data?.result?.map((item: any) => ({ label: item?.name, value: item?._id })),
+            options: Array.isArray(categoriesData?.data?.result) ? categoriesData?.data?.result?.map((item: any) => ({ label: item?.name, value: item?._id })) : [],
             props: { placeholder: "All Sports" }
           },
           className: "w-full",
@@ -82,14 +82,23 @@ function NominationsTable() {
             props: { placeholder: "Any Age" }
           },
           className: "w-full",
+          isLoading: categoriesLoading as boolean,
           onChange: (value) => {
             if (value === "all") {
               setMinAge(null)
               setMaxAge(null)
             } else {
               const ageRange = value.split("-")
-              setMinAge(Number(ageRange[0]))
-              setMaxAge(Number(ageRange[1]))
+              if (ageRange.length === 2) {
+                setMinAge(Number(ageRange[0]))
+                setMaxAge(Number(ageRange[1]))
+              } else if (value === '17+') {
+                setMinAge(17)
+                setMaxAge(null)
+              } else {
+                setMinAge(null)
+                setMaxAge(null)
+              }
             }
           }
         })}
@@ -102,6 +111,7 @@ function NominationsTable() {
             props: { placeholder: "All Gender" }
           },
           className: "w-full",
+          isLoading: categoriesLoading as boolean,
           onChange: (value) => {
             if (value === "all") {
               setGender(null)
@@ -119,6 +129,7 @@ function NominationsTable() {
             props: { placeholder: "All Placement" }
           },
           className: "w-full",
+          isLoading: categoriesLoading as boolean,
           onChange: (value) => {
             if (value === "all") {
               setIsPlaced(null)
@@ -136,6 +147,7 @@ function NominationsTable() {
 
           },
           className: "w-full",
+          isLoading: categoriesLoading as boolean,
         })}
         {renderField({
           field: {
@@ -145,6 +157,7 @@ function NominationsTable() {
             props: { placeholder: "Search By Name", allowClear: true, onChange: (e) => setSearchTerm(e.target.value) },
           },
           className: "w-full",
+          isLoading: categoriesLoading as boolean,
         })}
 
       </div>

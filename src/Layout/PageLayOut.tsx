@@ -7,6 +7,7 @@ import { primaryBtn } from "../constant/btnStyle";
 
 interface PageContentProps {
     children: ReactNode;
+    className?: string;
 }
 
 interface NavigateButton {
@@ -74,6 +75,6 @@ export const PageLayout = ({
     );
 };
 
-export const PageContent = ({ children }: PageContentProps) => {
-    return <div className="space-y-4">{children}</div>;
+export const PageContent = ({ children, className }: PageContentProps) => {
+    return <div className={cn("space-y-4", className)}>{children}</div>;
 };

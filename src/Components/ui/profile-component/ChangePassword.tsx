@@ -1,5 +1,6 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input } from "antd";
 import { useChangePasswordMutation } from "../../../redux/services/authApis";
+import toast from "react-hot-toast";
 
 const ChangePassword = () => {
   const [form] = Form.useForm();
@@ -13,14 +14,15 @@ const ChangePassword = () => {
     };
     try {
       const res = await setNewPassword(ChangePasswordDatas).unwrap();
-      if (res?.success) {
-        message.success("Password Changed successfully.");
-      } else {
+      if (!res?.success) {
         throw new Error(res?.message || "Failed to change Password.");
+      }
+      if (res?.success) {
+        toast.success("Password Changed successfully.");
       }
     } catch (error: any) {
       console.error("Failed to change password:", error);
-      message.error(error?.data?.message || error?.message || "Failed to change Password.");
+      toast.error(error?.data?.message || error?.message || "Failed to change Password.");
     }
   };
   return (

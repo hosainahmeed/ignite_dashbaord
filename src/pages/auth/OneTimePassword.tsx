@@ -25,7 +25,7 @@ const OneTimePassword = () => {
       }
       const data = {
         email: email,
-        resetCode: values?.otp
+        resetCode: parseInt(values?.otp)
       }
       const res = await verifyResetOtp(data).unwrap();
       if (!res?.success) throw new Error(res?.message)

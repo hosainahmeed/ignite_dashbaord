@@ -31,7 +31,7 @@ const OneTimePassword = () => {
       if (!res?.success) throw new Error(res?.message)
       if (res?.success) {
         toast.success(res?.data?.message || res?.message || "Verification code sent successfully.")
-        navigate(`/otp?email=${email}`);
+        navigate(`/reset-password?email=${email}`);
       }
     } catch (error: any) {
       toast.error(error?.data?.message || error?.message || "Failed to send verification code.")
@@ -68,7 +68,7 @@ const OneTimePassword = () => {
         >
           <div className='flex items-center justify-center'>
             <Form.Item name="otp" rules={[{ required: true, message: 'Please enter the OTP' }]}>
-              <Input.OTP length={5} size="large" />
+              <Input.OTP length={6} size="large" />
             </Form.Item>
           </div>
           <Button

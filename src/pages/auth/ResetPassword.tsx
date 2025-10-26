@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { primaryBtn } from '../../constant/btnStyle';
 import { useResetPasswordMutation } from '../../redux/services/authApis';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 const { Title } = Typography;
 
 const ResetPassword = () => {
@@ -34,7 +35,12 @@ const ResetPassword = () => {
       if (!res?.success) throw new Error(res?.message)
       if (res?.success) {
         toast.success(res?.data?.message || res?.message || "Password reset successfully.")
-        navigate('/login', { replace: true });
+        Cookies.set('accessToken', res?.data?.accessToken);
+        if (Cookies.get('accessToken')) {
+          navigate('/', { replace: true });
+        }else{
+          navigate('/login', { replace: true });
+        }
       }
     } catch (error: any) {
       toast.error(error?.data?.message || error?.message || "Failed to reset password.")

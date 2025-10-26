@@ -23,8 +23,30 @@ const clubApis = baseApis.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: ['club']
-        })
+        }),
+        clubJoinFee: build.query({
+            query: (params: any) => ({
+                url: '/club-join-fee',
+                method: 'GET',
+                params
+            }),
+            providesTags: ['club-join-fee']
+        }),
+        createClubJoinFee: build.mutation({
+            query: (data: any) => ({
+                url: '/club-join-fee',
+                method: 'POST',
+                body: data
+            }),
+            invalidatesTags: ['club-join-fee']
+        }),
     })
 })
 
-export const { useGetAllClubQuery ,useGetSingleClubQuery,useDeleteClubMutation} = clubApis
+export const {
+    useGetAllClubQuery,
+    useGetSingleClubQuery,
+    useDeleteClubMutation,
+    useClubJoinFeeQuery,
+    useCreateClubJoinFeeMutation,
+} = clubApis

@@ -1,24 +1,25 @@
 import { IMAGE } from '../../assets/index.image';
 import DonationsGrowth from '../../Components/ui/chart/DonationsGrowth';
+import { useGetMetaDataQuery } from '../../redux/services/metaApis';
 import RecentlyDonations from './RecentlyDonations';
 
 
 function DashboardHome() {
-
+    const { data: metaData, isLoading } = useGetMetaDataQuery({});
     const cardData = [
         {
             title: 'Total Nominations',
-            value: 0,
+            value: isLoading ? 0 : metaData?.data?.nominationCount ?? 0,
             icon: <img src={IMAGE.nominations} alt="Nominations" />,
         },
         {
             title: 'Total Clubs',
-            value: 0,
+            value: isLoading ? 0 : metaData?.data?.clubCount ?? 0,
             icon: <img src={IMAGE.club} alt="Clubs" />,
         },
         {
             title: 'Total Donations',
-            value: 0,
+            value: isLoading ? 0 : metaData?.data?.donationCount ?? 0,
             icon: <img src={IMAGE.donation} alt="Donations" />,
         },
     ];

@@ -10,56 +10,36 @@ import {
 } from 'recharts';
 import { useEffect, useMemo, useState } from 'react';
 import { Select } from 'antd';
-
-const dummyData = {
-  data: {
-    total_years: [2023, 2024, 2025],
-    monthlyRegistration: {
-      Jan: 15,
-      Feb: 22,
-      Mar: 40,
-      Apr: 18,
-      May: 25,
-      Jun: 5,
-      Jul: 45,
-      Aug: 52,
-      Sep: 40,
-      Oct: 28,
-      Nov: 20,
-      Dec: 32,
-    },
-  },
-};
+import { useGetDonationChartDataQuery } from '../../../redux/services/metaApis';
 
 const DonationsGrowth = () => {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
   const [years, setYears] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: donationChartData, isFetching } = useGetDonationChartDataQuery({ year });
 
   useEffect(() => {
-
-    setIsLoading(true);
-    setTimeout(() => {
-      const years = dummyData?.data?.total_years || [];
-      setYears(years);
-      setIsLoading(false);
-    }, 500);
-  }, [currentYear]);
+    const apiYears = donationChartData?.data?.yearsDropdown || [];
+    if (Array.isArray(apiYears)) {
+      setYears(apiYears as number[]);
+      if (apiYears.length > 0 && !apiYears.includes(year)) {
+        setYear(apiYears[0] as number);
+      }
+    }
+  }, [donationChartData, year]);
 
   const { monthlyData, maxUsers } = useMemo(() => {
-    const monthMap = dummyData?.data?.monthlyRegistration || {};
-
-    const maxUsers = Math.max(...Object.values(monthMap), 0) + 4;
-
+    const list = donationChartData?.data?.chartData || [];
+    const totals = list.map((i: { totalDonate: number }) => i.totalDonate);
+    const maxUsers = Math.max(...(totals.length ? totals : [0]), 0) + 4;
     return {
-      monthlyData: Object.keys(monthMap).map((month) => ({
-        name: month,
-        totalUser: monthMap[month as keyof typeof monthMap],
+      monthlyData: list.map((i: { month: string; totalDonate: number }) => ({
+        name: i.month,
+        totalUser: i.totalDonate,
       })),
       maxUsers,
     };
-  }, []);
+  }, [donationChartData]);
 
   return (
     <div
@@ -72,7 +52,7 @@ const DonationsGrowth = () => {
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
       }}
     >
-      {isLoading ? (
+      {isFetching ? (
         <div className="w-full h-full flex items-center justify-center text-gray-500 font-medium">
           Loading chart...
         </div>

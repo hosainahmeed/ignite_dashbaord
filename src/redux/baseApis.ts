@@ -25,7 +25,8 @@ const baseApis = createApi({
         'nomination',
         'club',
         'donations',
-        'club-join-fee'
+        'club-join-fee',
+        'meta'
     ],
     endpoints: () => ({}),
 });

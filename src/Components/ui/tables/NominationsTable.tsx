@@ -30,6 +30,7 @@ const placementOption = [
 ]
 
 function NominationsTable() {
+  const [page, setPage] = useState<number>(1)
   const [minAge, setMinAge] = useState<number | null>(null)
   const [maxAge, setMaxAge] = useState<number | null>(null)
   const [childSport, setChildSport] = useState<string | null>(null)
@@ -37,7 +38,7 @@ function NominationsTable() {
   const [gender, setGender] = useState<string | null>(null)
   const [isPlaced, setIsPlaced] = useState<boolean | null>(null)
 
-  const queryParams = { minAge, maxAge, childSport, searchTerm, gender, isPlaced }
+  const queryParams = { minAge, maxAge, childSport, searchTerm, gender, isPlaced, page }
   const params = Object.entries(queryParams).reduce((acc, [key, value]) => {
     if (!(value === null || value === '')) {
       return { ...acc, [key]: value }
@@ -167,7 +168,15 @@ function NominationsTable() {
         scroll={{ x: "max-content" }}
         columns={nominationsTableColumns(handleAction)}
         dataSource={nominationsData?.data?.data?.result}
-        pagination={false}
+        pagination={{
+          position: ['bottomCenter'],
+          pageSize: nominationsData?.data?.data?.meta?.limit || 10,
+          total: nominationsData?.data?.data?.meta?.total,
+          current: nominationsData?.data?.data?.meta?.page,
+          onChange: (page) => {
+            setPage(page)
+          }
+        }}
         rowKey="_id"
       />
     </>

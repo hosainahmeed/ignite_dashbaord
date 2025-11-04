@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Button, Form, Input, Card, Typography, Divider, Checkbox } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -13,13 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [login, { isLoading: isLoginLoading }] = useLoginMutation()
-
-  useEffect(() => {
-    form.setFieldsValue({
-      email: 'skyfal430@gmail.com',
-      password: 'secureAdminPassword123',
-    });
-  }, [form]);
 
   const onFinish = async ({ email, password }: { email: string, password: string }) => {
     if (!email || !password) {
@@ -39,6 +31,7 @@ const Login = () => {
         navigate('/')
         Cookies.set('accessToken', res?.data?.accessToken)
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error?.data?.message || error?.message || "Failed to login.")
     }

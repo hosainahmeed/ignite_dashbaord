@@ -4,7 +4,7 @@ const baseApis = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // baseUrl: "http://10.10.20.9:5070",
-    baseUrl: "http://54.221.147.249:5000",
+    baseUrl: "https://api.ignitefoundation.us",
     prepareHeaders: (headers) => {
       const token = Cookies.get("accessToken");
       if (token) {

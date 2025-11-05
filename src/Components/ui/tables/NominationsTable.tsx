@@ -67,6 +67,7 @@ function NominationsTable() {
             type: "select",
             key: "sportType",
             label: "All Sports",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             options: Array.isArray(categoriesData?.data?.result) ? categoriesData?.data?.result?.map((item: any) => ({ label: item?.name, value: item?._id })) : [],
             props: { placeholder: "All Sports" }
           },

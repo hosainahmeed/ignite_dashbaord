@@ -41,7 +41,7 @@ export default function donationsTableColumns(
             title: "Fee Covered",
             dataIndex: "feeCovered",
             key: "feeCovered",
-            render: (feeCovered) => <span>{feeCovered ? 'Yes (3%)' : 'No (0%)'}</span>,
+            render: (_, record) => <span>{record.freeCovered === true ? 'Yes (3%)' : `No (0%)`}</span>,
         },
         {
             title: "Date",

@@ -3,10 +3,10 @@ import baseApis from "../baseApis";
 const donationApis = baseApis.injectEndpoints({
     endpoints: (build) => ({
         getAllDonations: build.query({
-            query: ({ fundType }) => ({
+            query: ({ fundType, searchTerm }) => ({
                 url: '/donation/get-all',
                 method: 'GET',
-                params: { fundType }
+                params: { fundType, searchTerm }
             }),
             providesTags: ['donations']
         }),

@@ -18,8 +18,10 @@ const userTypeOptions = [
 function DonationTable({ recentUser }: donationTableTableProps) {
     const navigate = useNavigate();
     const [fundType, setFundType] = useState('')
+    const [searchTerm, setSearchTerm] = useState('')
     const { data: donationsData, isLoading } = useGetAllDonationsQuery({
-        ...(fundType !== '' && { fundType: fundType })
+        ...(fundType !== '' && { fundType: fundType }),
+        ...(searchTerm !== '' && { searchTerm: searchTerm })
     })
     const handleAction = (action: "view" | "block", record: donationsRecord) => {
         if (action === "view") {
@@ -49,7 +51,7 @@ function DonationTable({ recentUser }: donationTableTableProps) {
                         type: "text",
                         key: "username",
                         label: "Username",
-                        props: { placeholder: "Search By Name", onChange: (e) => console.log(e.target.value) },
+                        props: { placeholder: "Search By Name", onChange: (e) => setSearchTerm(e.target.value) },
                     },
                     className: "!w-[300px]"
                 })}

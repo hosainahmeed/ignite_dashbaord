@@ -5,19 +5,22 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import donationsTableColumns from "../columns/DonationsTableColumns";
 import { useGetAllDonationsQuery } from "../../../redux/services/donationApis";
+import { useState } from "react";
 
 interface donationTableTableProps {
     recentUser?: boolean;
 }
-// eslint-disable-next-line react-refresh/only-export-components
 const userTypeOptions = [
-    { label: "All Donors", value: "all" },
-    { label: "IGNITE Fund", value: "IGNITE Fund" },
-    { label: "IGNITE a Child", value: "IGNITE a Child" },
+    { label: "All Donors", value: "" },
+    { label: "IGNITE Fund", value: "IGNITE_FUND" },
+    { label: "IGNITE a Child", value: "IGNITE_A_CHILD" },
 ];
 function DonationTable({ recentUser }: donationTableTableProps) {
     const navigate = useNavigate();
-    const { data: donationsData, isLoading } = useGetAllDonationsQuery(undefined)
+    const [fundType, setFundType] = useState('')
+    const { data: donationsData, isLoading } = useGetAllDonationsQuery({
+        ...(fundType !== '' && { fundType: fundType })
+    })
     const handleAction = (action: "view" | "block", record: donationsRecord) => {
         if (action === "view") {
             navigate(`/donation/${record._id}`)
@@ -38,7 +41,8 @@ function DonationTable({ recentUser }: donationTableTableProps) {
                         options: userTypeOptions,
                         props: { placeholder: "All Donor" }
                     },
-                    className: "!w-[300px]"
+                    className: "!w-[300px]",
+                    onChange: (e) => setFundType(e)
                 })}
                 {renderField({
                     field: {
@@ -53,7 +57,7 @@ function DonationTable({ recentUser }: donationTableTableProps) {
             </div>}
             <Table bordered loading={isLoading}
                 columns={donationsTableColumns(handleAction)}
-                dataSource={Array.isArray(donationsData?.data?.result) ? donationsData?.data?.result : []}
+                dataSource={Array.isArray(donationsData?.data?.result) ? recentUser ? donationsData?.data?.result.slice(0, 3) : donationsData?.data?.result : []}
                 pagination={false}
                 rowKey="email"
             />

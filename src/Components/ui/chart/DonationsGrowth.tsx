@@ -32,10 +32,11 @@ const DonationsGrowth = () => {
     const list = donationChartData?.data?.chartData || [];
     const totals = list.map((i: { totalDonate: number }) => i.totalDonate);
     const maxUsers = Math.max(...(totals.length ? totals : [0]), 0) + 4;
+    console.log(list)
     return {
       monthlyData: list.map((i: { month: string; totalDonate: number }) => ({
         name: i.month,
-        totalUser: i.totalDonate,
+        totalDonation: i.totalDonate,
       })),
       maxUsers,
     };
@@ -114,7 +115,7 @@ const DonationsGrowth = () => {
                 cursor={{ fill: 'rgba(170,119,217,0.1)' }}
               />
               <Bar
-                dataKey="totalUser"
+                dataKey="totalDonation"
                 fill="url(#colorUv)"
                 barSize={55}
                 radius={[5, 5, 0, 0]}

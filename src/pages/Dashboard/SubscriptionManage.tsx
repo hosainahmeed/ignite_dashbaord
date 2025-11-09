@@ -173,7 +173,7 @@ const Modal = ({
     children: React.ReactNode;
     onClose: () => void;
 }) => (
-    <div className="fixed inset-0 backdrop-blur-3xl bg-opacity-50 z-50 flex items-center justify-center px-3">
+    <div className="fixed inset-0 bg-black/10 backdrop-blur-md z-50 flex items-center justify-center px-3">
         <div className="bg-white rounded-lg max-w-md w-full p-6 relative animate-fade-in">
             <button
                 onClick={onClose}

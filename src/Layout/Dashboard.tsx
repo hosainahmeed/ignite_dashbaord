@@ -10,7 +10,7 @@ const Dashboard = () => {
           <Sidebar />
         </div>
         <div className="w-[calc(100%-300px)] bg-[var(--color-gray-20)] h-screen">
-          <div className="bg-[#E6ECF5] scroll-bar-hide w-full p-2 rounded-md h-[calc(100vh-110px)] overflow-y-scroll">
+          <div className="bg-[#F0E5EA] scroll-bar-hide w-full p-2 rounded-md h-[calc(100vh-110px)] overflow-y-scroll">
             <Outlet />
           </div>
         </div>

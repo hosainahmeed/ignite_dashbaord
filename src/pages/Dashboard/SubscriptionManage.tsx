@@ -19,17 +19,17 @@ export default function SubscriptionManagement() {
     const [tempFee, setTempFee] = useState('');
     const [tempDiscount, setTempDiscount] = useState('');
     const [isDiscountActive, setIsDiscountActive] = useState(true);
-    
+
     const plan = useMemo(() => {
         const data = clubJoinFeeData?.data;
         if (!data) return null;
 
         return {
             name: 'Club Join Fee',
-            price: data.fee.toString(),
-            discount: data.discountAmount.toString(),
-            isDiscountActive: data.isDiscountActive,
-            previousPrice: (data.fee + data.discountAmount).toString(),
+            price: data.fee,
+            discount: data?.discountAmount?.toString(),
+            isDiscountActive: data?.isDiscountActive,
+            previousPrice: (data.fee)?.toString(),
         };
     }, [clubJoinFeeData]);
 
@@ -80,13 +80,13 @@ export default function SubscriptionManagement() {
                             <div>
                                 <h2 className="text-2xl font-bold">{plan.name}</h2>
                                 <p className="text-gray-500 text-sm">
-                                    {`Join for $${plan.price}/year`}
+                                    {`Join for $${plan.isDiscountActive ? plan.price - plan.discount : plan.price}/year`}
                                 </p>
                             </div>
 
                             <div className="mb-4 flex flex-col items-end">
                                 <div>
-                                    <span className="text-black text-4xl font-bold">${plan.price}</span>
+                                    <span className="text-black text-4xl font-bold">${plan.isDiscountActive ? plan.price - plan.discount : plan.price}</span>
                                     {plan.isDiscountActive && (
                                         <span className="text-black ml-1 line-through">
                                             ${plan.previousPrice}/year

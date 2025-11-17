@@ -11,7 +11,8 @@ function IgniteTeamTable() {
     const [form] = Form.useForm();
     const [record, setRecord] = useState<IigniteTeam | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const { data: memberData } = useGetAllMemberQuery(undefined)
+    const [page, setPage] = useState<number>(1);
+    const { data: memberData } = useGetAllMemberQuery({ page, limit: 10})
     const [updateMember, { isLoading: isUpdateMemberLoading }] = useUpdateMemberMutation()
     const [deleteMember, { isLoading: isDeleteMemberLoading }] = useDeleteMemberMutation()
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -78,7 +79,15 @@ function IgniteTeamTable() {
                 bordered
                 columns={IgniteTeamTableColumns({ handleEditCategory, handleDeleteCategory })}
                 dataSource={memberData?.data?.result || []}
-                pagination={false}
+                pagination={{
+                    position: ['bottomCenter'],
+                    pageSize: memberData?.data?.meta?.limit || 10,
+                    total: memberData?.data?.meta?.total || 0,
+                    current: memberData?.data?.meta?.page || 1,
+                    onChange: (page) => {
+                        setPage(page)
+                    }
+                }}
                 rowKey="email"
             />
 

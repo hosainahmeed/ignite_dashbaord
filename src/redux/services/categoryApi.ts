@@ -3,9 +3,10 @@ import baseApis from "../baseApis";
 const categoryApi = baseApis.injectEndpoints({
     endpoints: (build) => ({
         allCategories: build.query({
-            query: () => ({
+            query: (params) => ({
                 url: '/category/get-all',
                 method: 'GET',
+                params: params,
             }),
             providesTags: ['category']
         }),

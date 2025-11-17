@@ -1,4 +1,4 @@
-import { Button, Form, Input, Card, Typography, Divider, Checkbox } from 'antd';
+import { Button, Form, Input, Card, Typography, Divider } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { IMAGE } from '../../assets/index.image';
@@ -74,14 +74,6 @@ const Login = () => {
 
           <Form.Item>
             <div className="flex justify-between">
-              <Form.Item className="flex items-center">
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox
-                    defaultChecked
-                  >Remember me</Checkbox>
-                </Form.Item>
-              </Form.Item>
-
               <Link to="/forgot-password" className="!text-[var(--bg-red-high)] !underline">
                 Forgot password
               </Link>

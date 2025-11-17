@@ -52,13 +52,16 @@ export const clubData: ClubRecord[] = [
 
 function Clubtable() {
     const navigate = useNavigate();
+    const [page, setPage] = useState<number>(1);
     const { data: categoryData, isLoading: categoryLoading } = useAllCategoriesQuery(undefined)
     const [sportsOffered, setSportsOffered] = useState<string>('')
     const [searchTerm, setSearchTerm] = useState<string>('')
     const { data: clubDatas, isLoading, isFetching } = useGetAllClubQuery(
         {
             ...(searchTerm !== '' && { searchTerm }),
-            ...(sportsOffered !== '' && { sportsOffered })
+            ...(sportsOffered !== '' && { sportsOffered }),
+            page,
+            limit: 10
         }
     )
     console.log(clubDatas?.data?.result)
@@ -71,7 +74,7 @@ function Clubtable() {
             toast.success("Club Blocked")
         }
     };
-//TODO : pagination
+
     return (
         <>
             <div className="flex gap-4 justify-end">
@@ -103,6 +106,15 @@ function Clubtable() {
                 loading={isLoading || isFetching}
                 columns={clubTableColumns(handleAction)}
                 dataSource={clubDatas?.data?.result}
+                pagination={{
+                    position: ['bottomCenter'],
+                    pageSize: clubDatas?.data?.meta?.limit || 10,
+                    total: clubDatas?.data?.meta?.total || 0,
+                    current: clubDatas?.data?.meta?.page || 1,
+                    onChange: (page) => {
+                        setPage(page)
+                    }
+                }}
                 rowKey="_id"
             />
         </>

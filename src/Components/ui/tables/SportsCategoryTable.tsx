@@ -10,7 +10,8 @@ function SportsCategoryTable() {
     const [form] = Form.useForm();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [record, setRecord] = useState<IsportCategory | null>(null);
-    const { data: categoryData, isLoading } = useAllCategoriesQuery(undefined)
+    const [page, setPage] = useState<number>(1);
+    const { data: categoryData, isLoading } = useAllCategoriesQuery({ page, limit: 10 })
     const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation()
     const [deleteCategory] = useDeleteCategoryMutation()
 
@@ -69,7 +70,15 @@ function SportsCategoryTable() {
                 loading={isLoading}
                 columns={categoryTableColumns(handleAction)}
                 dataSource={categoryData?.data?.result}
-                pagination={false}
+                pagination={{
+                    position: ['bottomCenter'],
+                    pageSize: categoryData?.data?.meta?.limit || 10,
+                    total: categoryData?.data?.meta?.total,
+                    current: categoryData?.data?.meta?.page,
+                    onChange: (page) => {
+                        setPage(page)
+                    }
+                }}
                 rowKey="name"
             />
             <CategoryFormWithOutImage

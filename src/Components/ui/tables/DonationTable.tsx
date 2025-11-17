@@ -19,9 +19,12 @@ function DonationTable({ recentUser }: donationTableTableProps) {
     const navigate = useNavigate();
     const [fundType, setFundType] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
+    const [page, setPage] = useState<number>(1);
     const { data: donationsData, isLoading } = useGetAllDonationsQuery({
         ...(fundType !== '' && { fundType: fundType }),
-        ...(searchTerm !== '' && { searchTerm: searchTerm })
+        ...(searchTerm !== '' && { searchTerm: searchTerm }),
+        page,
+        limit: 10
     })
     const handleAction = (action: "view" | "block", record: donationsRecord) => {
         if (action === "view") {
@@ -60,8 +63,16 @@ function DonationTable({ recentUser }: donationTableTableProps) {
             <Table bordered loading={isLoading}
                 columns={donationsTableColumns(handleAction)}
                 dataSource={Array.isArray(donationsData?.data?.result) ? recentUser ? donationsData?.data?.result.slice(0, 3) : donationsData?.data?.result : []}
-                pagination={false}
-                rowKey="email"
+                pagination={{
+                    position: ['bottomCenter'],
+                    pageSize: donationsData?.data?.meta?.limit || 10,
+                    total: donationsData?.data?.meta?.total || 0,
+                    current: donationsData?.data?.meta?.page || 1,
+                    onChange: (page) => {
+                        setPage(page)
+                    }
+                }}
+                rowKey="_id"
             />
         </div>
     );

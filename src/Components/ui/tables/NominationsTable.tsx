@@ -14,7 +14,8 @@ const ageOption = [
   { label: "8-10 years", value: "8-10" },
   { label: "11-13 years", value: "11-13" },
   { label: "14-16 years", value: "14-16" },
-  { label: "17+ years", value: "17+" },
+  { label: "14-18 years", value: "14-18" },
+  { label: "18+ years", value: "18+" },
 ]
 
 const genderOption = [
@@ -45,16 +46,13 @@ function NominationsTable() {
     }
     return acc
   }, {})
-  console.log(params)
+
   const { data: nominationsData, isLoading } = useGetAllNominationQuery(params)
-  const { data: categoriesData, isLoading: categoriesLoading } = useAllCategoriesQuery(undefined)
+  const { data: categoriesData, isLoading: categoriesLoading } = useAllCategoriesQuery({ limit: 999, sort: "name" })
   const navigate = useNavigate();
   const handleAction = (action: "view" | "block", record: ChildRegistrationData) => {
     if (action === "view") {
       navigate(`/nominations-details/${record._id}`)
-    }
-    if (action === "block") {
-      console.log(record)
     }
   };
 
@@ -94,8 +92,8 @@ function NominationsTable() {
               if (ageRange.length === 2) {
                 setMinAge(Number(ageRange[0]))
                 setMaxAge(Number(ageRange[1]))
-              } else if (value === '17+') {
-                setMinAge(17)
+              } else if (value === '18+') {
+                setMinAge(18)
                 setMaxAge(null)
               } else {
                 setMinAge(null)

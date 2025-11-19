@@ -6,6 +6,7 @@ import { Card } from "antd";
 import { Button } from "antd";
 
 import toast from "react-hot-toast";
+import { videoExtensions } from "../../../constant/options";
 
 function NominationDetails() {
   const { id } = useParams();
@@ -13,21 +14,26 @@ function NominationDetails() {
   const [markAsPlaced, { isLoading: markAsPlacedLoading }] = useMarkAsPlacedMutation()
 
   const data: ChildRegistrationData = singleNominationData?.data
+  console.log(data)
   const DetailsData = [
     { title: "Child’s Sport", description: data?.childSport?.name ?? 'N/A' },
     { title: "Child’s First Name", description: data?.childFirstName ?? 'N/A' },
     { title: "Child’s Last Name", description: data?.childLastName ?? 'N/A' },
-    { title: "Child’s Date of Birth", description: data?.dateOfBirth ?? 'N/A' },
+    { title: "Child’s Date of Birth", description: data?.dateOfBirth?.split("T")[0] ?? 'N/A' },
     { title: "Child’s Gender", description: data?.gender ?? 'N/A' },
     { title: "Parent/Guardian First Name", description: data?.guardianFirstName ?? 'N/A' },
     { title: "Parent/Guardian Last Name", description: data?.guardianLastName ?? 'N/A' },
     { title: "Parent/Guardian Email", description: data?.guardianEmail ?? 'N/A' },
     { title: "Parent/Guardian street address", description: data?.guardianStreetAddress ?? 'N/A' },
     { title: "Parent/Guardian City / State", description: data?.guardianCityS ?? 'N/A' },
+    { title: "Parent/Guardian Zip Code", description: data?.guardianZipCode ?? 'N/A' },
     { title: "Annual Household Income", description: data?.annualHouseHoldIncome ?? 'N/A' },
     { title: "Showcase Videos or Social Media link", description: data?.showcaseVideoLink ?? 'N/A' },
+    { title: "Showcase Videos permission", description: data?.isShowCase ? "Allowed" : "Not Allowed" },
   ]
-  console.log(data?.isPlaced ? "Placed" : "Not Placed")
+
+  const videoType = videoExtensions.find((extension) => data?.showcaseVideoLink?.endsWith(extension))
+
   const handleMarkAsPlaced = async () => {
     try {
       if (!id) {
@@ -49,7 +55,7 @@ function NominationDetails() {
       <PageContent>
         <div className="grid grid-cols-2 gap-4">
           {DetailsData.map((item, index) => (
-            <DetailsCard loading={isLoading} key={index} title={item.title} description={item.description} />
+            <DetailsCard loading={isLoading} key={index} title={item.title} description={item.description} videoType={videoType} />
           ))}
         </div>
         <div className="p-4 border border-[#FFDAD9] rounded-xl bg-[#fff]">
@@ -78,7 +84,7 @@ function NominationDetails() {
 
 export default NominationDetails
 
-const DetailsCard = ({ title, description, loading }: { title: string, description: string | number, loading?: boolean }) => {
+const DetailsCard = ({ title, description, loading, videoType }: { title: string, description: string | number, loading?: boolean, videoType?: string }) => {
   return (
     <>
       {
@@ -86,7 +92,11 @@ const DetailsCard = ({ title, description, loading }: { title: string, descripti
           <div
             className="p-4 border border-[#FFDAD9] rounded-xl bg-[#fff]">
             <p className="font-bold">{title}</p>
-            <p className="text-gray-600">{description}</p>
+            {title === "Showcase Videos or Social Media link" &&
+              typeof description === "string"
+              && videoType
+              ? <video src={description} controls className="aspect-video h-28 border rounded-md overflow-hidden border-gray-200 shadow" />
+              : description === "" ? <p className="text-gray-600">N/A</p> : <p className="text-gray-600">{description}</p>}
           </div>
         )
       }

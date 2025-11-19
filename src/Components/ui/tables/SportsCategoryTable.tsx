@@ -11,7 +11,7 @@ function SportsCategoryTable() {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [record, setRecord] = useState<IsportCategory | null>(null);
     const [page, setPage] = useState<number>(1);
-    const { data: categoryData, isLoading } = useAllCategoriesQuery({ page, limit: 10 })
+    const { data: categoryData, isLoading } = useAllCategoriesQuery({ page, limit: 10, sort: "name" })
     const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation()
     const [deleteCategory] = useDeleteCategoryMutation()
 

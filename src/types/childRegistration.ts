@@ -21,5 +21,6 @@ export interface ChildRegistrationData {
     isPlaced: boolean,
     createdAt: string,
     updatedAt: string,
-    age: number
+    age: number,
+    isShowCase: boolean
 }

@@ -30,7 +30,7 @@ function IgniteTeamTable() {
             }
             toast.success(res?.message || "Member deleted successfully")
         } catch (error: any) {
-            console.log(error)
+
             toast.error(error?.data?.message || error?.message || "Failed to delete member")
         }
     }, [deleteMember]);

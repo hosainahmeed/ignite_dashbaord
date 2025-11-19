@@ -21,7 +21,7 @@ const Profile = () => {
       setImage(e.target.files[0]);
     }
   };
-  console.log(profileData);
+  
   const profileImage = image
     ? URL.createObjectURL(image)
     : profileData?.data?.profile_image

@@ -41,7 +41,7 @@ const ProfileEdit = ({ image, data, setImage }: {
       toast.error(error?.data?.message || error?.message || "Failed to update profile.");
     }
   };
-  console.log(data);
+
   return (
     <div>
       <p className="text-[var(--bg-red-high)] text-3xl text-center">

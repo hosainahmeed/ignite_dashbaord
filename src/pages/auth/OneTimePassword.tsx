@@ -58,7 +58,7 @@ const OneTimePassword = () => {
       <Card style={{ width: 500 }}>
         <div className='flex items-center justify-center flex-col gap-2'>
           <Title level={3}>Check your email</Title>
-          <p className='text-center text-gray-600 mb-4'>We sent a reset link to <b>{email ? email?.slice(0, 5) + '...' : 'your.email@example.com'}</b> enter 5 digit code that mentioned in the email</p>
+          <p className='text-center text-gray-600 mb-4'>We sent a reset link to <b>{email ? email?.slice(0, 5) + '...' : 'your.email@example.com'}</b> enter 6 digit code that mentioned in the email</p>
         </div>
 
         <Form

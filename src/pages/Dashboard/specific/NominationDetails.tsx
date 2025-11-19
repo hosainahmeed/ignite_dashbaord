@@ -7,6 +7,7 @@ import { Button } from "antd";
 
 import toast from "react-hot-toast";
 import { videoExtensions } from "../../../constant/options";
+import { FaVideo } from "react-icons/fa";
 
 function NominationDetails() {
   const { id } = useParams();
@@ -95,7 +96,7 @@ const DetailsCard = ({ title, description, loading, videoType }: { title: string
             {title === "Showcase Videos or Social Media link" &&
               typeof description === "string"
               && videoType
-              ? <video src={description} controls className="aspect-video h-28 border rounded-md overflow-hidden border-gray-200 shadow" />
+              ? <a href={description} target="_blank" className="text-blue-600 flex items-center gap-2"><FaVideo /> Click to see</a>
               : description === "" ? <p className="text-gray-600">N/A</p> : <p className="text-gray-600">{description}</p>}
           </div>
         )

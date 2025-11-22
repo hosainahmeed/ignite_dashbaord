@@ -6,16 +6,15 @@ import nominationsTableColumns from "../columns/NominationsTableColumns";
 import { useGetAllNominationQuery } from "../../../redux/services/nominationApis";
 import { useAllCategoriesQuery } from "../../../redux/services/categoryApi";
 import { useState } from "react";
+import PlaceSearch from "../reuseable/PlaceSearch";
 
 const ageOption = [
   { label: "Any Age", value: "all" },
-  { label: "2-4 years", value: "2-4" },
-  { label: "5-7 years", value: "5-7" },
-  { label: "8-10 years", value: "8-10" },
-  { label: "11-13 years", value: "11-13" },
-  { label: "14-16 years", value: "14-16" },
-  { label: "14-18 years", value: "14-18" },
-  { label: "18+ years", value: "18+" },
+  { label: "4-6 years", value: "4-6" },
+  { label: "7-9 years", value: "7-9" },
+  { label: "10-12 years", value: "10-13" },
+  { label: "13-15 years", value: "13-15" },
+  { label: "16-18 years", value: "16-18" },
 ]
 
 const genderOption = [
@@ -30,6 +29,7 @@ const placementOption = [
   { label: "Placed", value: true },
 ]
 
+
 function NominationsTable() {
   const [page, setPage] = useState<number>(1)
   const [minAge, setMinAge] = useState<number | null>(null)
@@ -38,10 +38,16 @@ function NominationsTable() {
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const [gender, setGender] = useState<string | null>(null)
   const [isPlaced, setIsPlaced] = useState<boolean | null>(null)
+  const [maxDistance, setMaxDistance] = useState<number | string | null>(0)
+  const [mapData, setMapData] = useState<{ longitude: number, latitude: number }>({
+    longitude: 0,
+    latitude: 0
+  })
+  console.log(mapData)
 
-  const queryParams = { minAge, maxAge, childSport, searchTerm, gender, isPlaced, page }
+  const queryParams = { minAge, maxAge, childSport, searchTerm, gender, isPlaced, page, maxDistance, longitude: mapData?.longitude, latitude: mapData?.latitude }
   const params = Object.entries(queryParams).reduce((acc, [key, value]) => {
-    if (!(value === null || value === '')) {
+    if (!(value === null || value === '' || value === 0)) {
       return { ...acc, [key]: value }
     }
     return acc
@@ -138,17 +144,18 @@ function NominationsTable() {
             }
           }
         })}
+        <PlaceSearch setMapData={setMapData} />
         {renderField({
           field: {
             type: "text",
-            key: "location",
-            label: "Search By Location",
-            props: { placeholder: "Search By Location", allowClear: true, onChange: (e) => setSearchTerm(e.target.value) },
-
+            key: "maxDistance",
+            label: "search by distance",
+            props: { placeholder: "search by distance", allowClear: true, onChange: (e) => setMaxDistance(e.target.value) },
           },
           className: "w-full",
           isLoading: categoriesLoading as boolean,
         })}
+
         {renderField({
           field: {
             type: "text",

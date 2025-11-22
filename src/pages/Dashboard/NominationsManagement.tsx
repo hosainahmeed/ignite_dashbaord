@@ -57,7 +57,7 @@ function NominationsManagement() {
             <PageLayout
                 title="Nominations Management"
             >
-                <div className='mb-3 '>
+                <div className='mb-3 w-fit'>
                     <CSVLink
                         data={csvData}
                         headers={headers}

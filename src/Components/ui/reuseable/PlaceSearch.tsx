@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { memo, useState } from "react";
 import { Select, Spin } from "antd";
 import { getPlaceNameAndCoordinates } from "../../../lib/getPlaceNameAndCoordinates";

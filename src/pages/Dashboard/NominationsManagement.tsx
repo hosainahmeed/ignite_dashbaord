@@ -1,13 +1,11 @@
-import { FaFileCsv } from 'react-icons/fa';
+import { useRef } from "react";
 import NominationsTable from '../../Components/ui/tables/NominationsTable';
 import { PageContent, PageLayout } from '../../Layout/PageLayOut';
 import { useGetAllNominationQuery } from '../../redux/services/nominationApis';
 import { CSVLink } from "react-csv";
-import { Button } from 'antd';
-import { primaryBtn } from '../../constant/btnStyle';
-
 function NominationsManagement() {
-    const { data, isLoading } = useGetAllNominationQuery(undefined);
+    const csvRef: any = useRef(null);
+    const { data, isLoading } = useGetAllNominationQuery({ limit: 9999 });
     const nominations = data?.data?.data?.result || [];
     const headers = [
         { label: "Child First Name", key: "childFirstName" },
@@ -30,7 +28,6 @@ function NominationsManagement() {
         { label: "Created At", key: "createdAt" },
     ];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const csvData = nominations.map((n: any) => ({
         childFirstName: n.childFirstName,
         childLastName: n.childLastName,
@@ -56,22 +53,24 @@ function NominationsManagement() {
         <div>
             <PageLayout
                 title="Nominations Management"
+                isButton={{
+                    buttonText: "Export CSV",
+                    type: "action",
+                    onClick: () => {
+                        if (csvRef.current) {
+                            csvRef.current.link.click();
+                        }
+                    }
+                }}
             >
-                <div className='mb-3 w-fit'>
-                    <CSVLink
-                        data={csvData}
-                        headers={headers}
-                        filename="nominations.csv"
-                        target="_blank"
-                        className="flex items-center gap-2"
-                    >
-                        <Button size="large"
-                            style={primaryBtn}
-                            icon={<FaFileCsv />}>
-                            Export CSV
-                        </Button>
-                    </CSVLink>
-                </div>
+                <CSVLink
+                    data={csvData}
+                    headers={headers}
+                    filename="nominations.csv"
+                    className="hidden"
+                    ref={csvRef}
+                />
+
                 <PageContent>
                     {isLoading ? (
                         <p>Loading...</p>

@@ -38,12 +38,11 @@ function NominationsTable() {
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const [gender, setGender] = useState<string | null>(null)
   const [isPlaced, setIsPlaced] = useState<boolean | null>(null)
-  const [maxDistance, setMaxDistance] = useState<number | string | null>(0)
+  const [maxDistance, setMaxDistance] = useState<number | null>(0)
   const [mapData, setMapData] = useState<{ longitude: number, latitude: number }>({
     longitude: 0,
     latitude: 0
   })
-  console.log(mapData)
 
   const queryParams = { minAge, maxAge, childSport, searchTerm, gender, isPlaced, page, maxDistance, longitude: mapData?.longitude, latitude: mapData?.latitude }
   const params = Object.entries(queryParams).reduce((acc, [key, value]) => {
@@ -65,7 +64,7 @@ function NominationsTable() {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 justify-end">
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4 justify-end">
         {renderField({
           field: {
             type: "select",
@@ -147,12 +146,18 @@ function NominationsTable() {
         <PlaceSearch setMapData={setMapData} />
         {renderField({
           field: {
-            type: "text",
+            type: "number",
             key: "maxDistance",
             label: "search by distance",
-            props: { placeholder: "search by distance", allowClear: true, onChange: (e) => setMaxDistance(e.target.value) },
+            props: {
+              placeholder: "search by distance", onChange: (distance) => {
+                if (distance && Number(distance) > 0) {
+                  setMaxDistance(Number(distance))
+                }
+              }
+            },
           },
-          className: "w-full",
+          className: "!w-full",
           isLoading: categoriesLoading as boolean,
         })}
 

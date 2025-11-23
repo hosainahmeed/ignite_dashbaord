@@ -1,33 +1,35 @@
 import { memo, useState } from "react";
 import { Select, Spin } from "antd";
-import { getPlaceNameAndCoordinates } from "../../../lib/getPlaceNameAndCoordinates";
+import { getPlaceDetails, getPlaceSuggestions } from "../../../lib/getPlaceNameAndCoordinates";
 
 const PlaceSearch = ({ setMapData }: { setMapData: any }) => {
     const [options, setOptions] = useState<any>([]);
     const [loading, setLoading] = useState(false);
 
     const handleSearch = async (value: string) => {
-        if (!value) return;
+        if (!value) {
+            setOptions([]);
+            return;
+        }
+
         setLoading(true);
-        const result = await getPlaceNameAndCoordinates(value);
+
+        const results = await getPlaceSuggestions(value);
         setLoading(false);
 
-        if (result) {
-            setOptions([
-                {
-                    value: JSON.stringify(result),
-                    label: result.name
-                }
-            ]);
-        }
+        setOptions(
+            results.map((place: any) => ({
+                label: place.name,
+                value: place.placeId,
+            }))
+        );
     };
 
-    const handleSelect = (value: string) => {
-        const place = JSON.parse(value);
-        console.log(place)
-        if (!place) {
-            return false
-        }
+    const handleSelect = async (placeId: string) => {
+        const place = await getPlaceDetails(placeId);
+
+        if (!place) return;
+
         setMapData({
             latitude: place?.latitude,
             longitude: place?.longitude

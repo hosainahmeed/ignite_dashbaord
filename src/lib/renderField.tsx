@@ -42,17 +42,17 @@ export const renderField = ({
             return <Input onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "password":
-            return <Input.Password onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <Input.Password allowClear onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "textarea":
-            return <Input.TextArea onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <Input.TextArea allowClear onChange={(e) => onChange?.(e.target.value)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "number":
             return <InputNumber onChange={(e) => onChange?.(e)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         case "select":
             return (
-                <Select loading={isLoading} onChange={(e) => onChange?.(e)} placeholder="Select" size="large" className={cn("", className)} key={field.key} {...field.props}>
+                <Select allowClear loading={isLoading} onChange={(e) => onChange?.(e)} placeholder="Select" size="large" className={cn("", className)} key={field.key} {...field.props}>
                     {field.options.map((opt) => (
                         <Select.Option key={String(opt.value)} value={opt.value}>
                             {opt.label}
@@ -62,7 +62,7 @@ export const renderField = ({
             );
 
         case "date":
-            return <DatePicker onChange={(e) => onChange?.(e)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
+            return <DatePicker allowClear onChange={(e) => onChange?.(e)} size="large" className={cn("", className)} key={field.key} {...field.props} />;
 
         default:
             return null;

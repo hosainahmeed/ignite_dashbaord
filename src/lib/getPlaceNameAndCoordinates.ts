@@ -1,45 +1,51 @@
-export async function getPlaceNameAndCoordinates(query: string) {
+export async function getPlaceSuggestions(query: string) {
   try {
-    const url = "https://places.googleapis.com/v1/places:searchText";
-    const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY
+    const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
 
-    if (!apiKey) {
-      throw new Error("API key not found");
-    }
-    const res = await fetch(url, {
+    const res = await fetch("https://places.googleapis.com/v1/places:autocomplete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask": "places.displayName,places.location"
+        "X-Goog-Api-Key": apiKey!,
+        "X-Goog-FieldMask": "suggestions.placePrediction.placeId,suggestions.placePrediction.text",
       },
       body: JSON.stringify({
-        textQuery: query
-      })
+        input: query,
+      }),
     });
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.log("API Error:", errorText);
-      throw new Error("Failed to fetch");
-    }
-
     const data = await res.json();
+    if (!data?.suggestions) return [];
 
-    if (!data.places || data.places.length === 0) {
-      return null;
-    }
+    return data.suggestions.map((s: any) => ({
+      name: s.placePrediction?.text?.text,
+      placeId: s.placePrediction?.placeId,
+    }));
+  } catch (error) {
+    console.error("Autocomplete error:", error);
+    return [];
+  }
+}
 
-    const place = data.places[0];
+export async function getPlaceDetails(placeId: string) {
+  try {
+    const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
+
+    const res = await fetch(
+      `https://places.googleapis.com/v1/places/${placeId}?fields=displayName,location&key=${apiKey}`
+    );
+
+    if (!res.ok) return null;
+
+    const place = await res.json();
 
     return {
       name: place.displayName?.text ?? "",
       latitude: place.location?.latitude ?? null,
       longitude: place.location?.longitude ?? null,
     };
-
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Place details error:", error);
     return null;
   }
 }

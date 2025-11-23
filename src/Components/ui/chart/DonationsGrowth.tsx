@@ -67,7 +67,7 @@ const DonationsGrowth = () => {
                 fontSize: '18px',
               }}
             >
-              Donations growth
+              Donations growth ($ USD)
             </h3>
             <Select
               value={year}

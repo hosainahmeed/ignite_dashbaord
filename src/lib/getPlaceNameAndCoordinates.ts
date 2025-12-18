@@ -30,7 +30,7 @@ export async function getPlaceSuggestions(query: string) {
     return [];
   }
 }
-
+// nice ot meet you
 export async function getPlaceDetails(placeId: string) {
   try {
     const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;

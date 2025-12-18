@@ -13,9 +13,7 @@ function NominationDetails() {
   const { id } = useParams();
   const { data: singleNominationData, isLoading } = useGetSingleNominationQuery(id as string, { skip: !id })
   const [markAsPlaced, { isLoading: markAsPlacedLoading }] = useMarkAsPlacedMutation()
-
   const data: ChildRegistrationData = singleNominationData?.data
-  console.log(data)
   const DetailsData = [
     { title: "Child’s Sport", description: data?.childSport?.name ?? 'N/A' },
     { title: "Child’s First Name", description: data?.childFirstName ?? 'N/A' },

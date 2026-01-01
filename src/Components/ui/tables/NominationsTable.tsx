@@ -67,7 +67,7 @@ function NominationsTable() {
           throw new Error("Nomination not found")
         }
         const res = await deleteNominationMutation(record?._id).unwrap()
-        if (!res?.success) {
+        if ('success' in res && !res?.success) {
           throw new Error("Nomination not found")
         }
 

@@ -3,10 +3,11 @@ import { renderField } from "../../../lib/renderField";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
 import { useNavigate } from "react-router-dom";
 import nominationsTableColumns from "../columns/NominationsTableColumns";
-import { useGetAllNominationQuery } from "../../../redux/services/nominationApis";
+import { useGetAllNominationQuery, useDeleteNominationMutation } from "../../../redux/services/nominationApis";
 import { useAllCategoriesQuery } from "../../../redux/services/categoryApi";
 import { useState } from "react";
 import PlaceSearch from "../reuseable/PlaceSearch";
+import toast from "react-hot-toast";
 
 const ageOption = [
   { label: "Any Age", value: "all" },
@@ -54,10 +55,26 @@ function NominationsTable() {
 
   const { data: nominationsData, isLoading } = useGetAllNominationQuery(params)
   const { data: categoriesData, isLoading: categoriesLoading } = useAllCategoriesQuery({ limit: 999, sort: "name" })
+  const [deleteNominationMutation] = useDeleteNominationMutation()
   const navigate = useNavigate();
-  const handleAction = (action: "view" | "block", record: ChildRegistrationData) => {
+  const handleAction = async (action: "view" | "block" | "delete", record: ChildRegistrationData) => {
     if (action === "view") {
       navigate(`/nominations-details/${record._id}`)
+    }
+    if (action === "delete") {
+      try {
+        if (!record?._id) {
+          throw new Error("Nomination not found")
+        }
+        const res = await deleteNominationMutation(record?._id).unwrap()
+        if (!res?.success) {
+          throw new Error("Nomination not found")
+        }
+
+        toast.success(res?.message || "Nomination deleted successfully")
+      } catch (error: any) {
+        toast.error(error?.data?.message || error?.message || "Something went wrong")
+      }
     }
   };
 

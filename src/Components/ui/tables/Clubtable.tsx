@@ -4,7 +4,7 @@ import { renderField } from "../../../lib/renderField";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import clubTableColumns from "../columns/ClubTableColumns";
-import { useGetAllClubQuery } from "../../../redux/services/clubApis";
+import { useDeleteClubJoinFeeMutation, useGetAllClubQuery } from "../../../redux/services/clubApis";
 import { useState } from "react";
 import { useAllCategoriesQuery } from "../../../redux/services/categoryApi";
 export const clubData: ClubRecord[] = [
@@ -53,7 +53,7 @@ export const clubData: ClubRecord[] = [
 function Clubtable() {
     const navigate = useNavigate();
     const [page, setPage] = useState<number>(1);
-    const { data: categoryData, isLoading: categoryLoading } = useAllCategoriesQuery({ limit: 999 , sort: "name"})
+    const { data: categoryData, isLoading: categoryLoading } = useAllCategoriesQuery({ limit: 999, sort: "name" })
     const [sportsOffered, setSportsOffered] = useState<string>('')
     const [searchTerm, setSearchTerm] = useState<string>('')
     const { data: clubDatas, isLoading, isFetching } = useGetAllClubQuery(
@@ -64,13 +64,28 @@ function Clubtable() {
             limit: 10
         }
     )
+    const [deleteClubJoinFee] = useDeleteClubJoinFeeMutation()
 
-    const handleAction = (action: "view" | "block", record: ClubRecord) => {
+    const handleAction = async (action: "view" | "block" | "delete", record: ClubRecord) => {
         if (action === "view") {
             navigate(`/club/${record._id}`)
         }
         if (action === "block") {
             toast.success("Club Blocked")
+        }
+        if (action === "delete") {
+           try {
+            if (!record?._id) {
+                throw new Error("Club ID is required")
+            }
+            const res = await deleteClubJoinFee(record?._id).unwrap()
+            if (!res?.success) {
+               throw new Error(res?.message)
+            }
+            toast.success(res?.message)
+           } catch (error: any) {
+            toast.error(error?.data?.message || error?.message || "Something went wrong")
+           }
         }
     };
 

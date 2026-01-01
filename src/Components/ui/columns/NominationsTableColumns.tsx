@@ -1,10 +1,11 @@
-import { Space, Button, Tag } from "antd";
+import { Space, Button, Tag, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { ChildRegistrationData } from "../../../types/childRegistration";
 import { ViewDetailIcon } from "../icons/SvgIcons";
+import { Delete } from "lucide-react";
 
 export default function nominationsTableColumns(
-    onAction?: (action: "view" | "block", record: ChildRegistrationData) => void
+    onAction?: (action: "view" | "block" | "delete", record: ChildRegistrationData) => void
 ): ColumnsType<ChildRegistrationData> {
     return [
         {
@@ -67,6 +68,24 @@ export default function nominationsTableColumns(
                         icon={<ViewDetailIcon />}
                         onClick={() => onAction?.("view", record)}
                     />
+                    <Popconfirm
+                        placement="bottomRight"
+                        title="Are you sure to delete this nomination?" onConfirm={() => onAction?.("delete", record)}
+                        okButtonProps={{
+                            style: {
+                                backgroundColor: '#D62828',
+                                color: 'white'
+                            }
+                        }}
+                    >
+                        <Button
+                            style={{
+                                backgroundColor: '#D62828',
+                                color: 'white'
+                            }}
+                            icon={<Delete />}
+                        />
+                    </Popconfirm>
                 </Space>
             ),
         },

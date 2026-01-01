@@ -1,10 +1,11 @@
-import { Space, Button } from "antd";
+import { Space, Button, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { ClubRecord, sportsOfferedData } from "../../../types/User";
 import { ViewDetailIcon } from "../icons/SvgIcons";
+import { Delete } from "lucide-react";
 
 export default function clubTableColumns(
-    onAction?: (action: "view" | "block", record: ClubRecord) => void
+    onAction?: (action: "view" | "block" | "delete", record: ClubRecord) => void
 ): ColumnsType<ClubRecord> {
     return [
         {
@@ -62,6 +63,24 @@ export default function clubTableColumns(
                         onClick={() => onAction?.("view", record)}
                         icon={<ViewDetailIcon />}
                     />
+                    <Popconfirm
+                    placement="bottomRight"
+                    title="Are you sure to delete this club?" onConfirm={() => onAction?.("delete", record)}
+                    okButtonProps={{
+                        style: {
+                            backgroundColor: '#D62828',
+                            color: 'white'
+                        }
+                    }}
+                    >
+                        <Button
+                            style={{
+                                backgroundColor: '#D62828',
+                                color: 'white'
+                            }}
+                            icon={<Delete />}
+                        />
+                    </Popconfirm>
                 </Space>
             ),
         },

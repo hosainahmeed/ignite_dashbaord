@@ -23,8 +23,15 @@ const nominationApis = baseApis.injectEndpoints({
                 method: 'PATCH'
             }),
             invalidatesTags: ['nomination']
-        })
+        }),
+        deleteNomination: build.mutation({
+            query: (id: string) => ({
+                url: `/nomination/delete/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['nomination']
+        }),
     })
 })
 
-export const { useGetAllNominationQuery, useGetSingleNominationQuery, useMarkAsPlacedMutation } = nominationApis
+export const { useGetAllNominationQuery, useGetSingleNominationQuery, useMarkAsPlacedMutation, useDeleteNominationMutation } = nominationApis
